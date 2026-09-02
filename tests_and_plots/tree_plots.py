@@ -3,6 +3,7 @@
 ## These trees look different from the ones in my explanatory file, but this is easier to implement
 ## and I don't think it should make a huge difference, although that's TBD.
 
+import numpy as np
 import matplotlib.pyplot as plt
 from itertools import combinations, product
 

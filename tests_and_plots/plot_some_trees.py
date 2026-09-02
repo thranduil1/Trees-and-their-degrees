@@ -49,3 +49,11 @@ for k, (t, title) in enumerate(
 
 plt.tight_layout()
 plt.show()
+
+plt.savefig(
+    "results/example_tree.png",
+    dpi=200,
+    bbox_inches="tight",
+)
+
+plt.close()
