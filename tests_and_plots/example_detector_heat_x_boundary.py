@@ -39,3 +39,11 @@ fig, ax, distances, active = plot_detector_slice(
 )
 
 plt.show()
+
+plt.savefig(
+    "results/boundary_x.png",
+    dpi=200,
+    bbox_inches="tight",
+)
+
+plt.close()

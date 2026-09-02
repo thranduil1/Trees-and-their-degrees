@@ -5,12 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Tree_building import tree_at, make_tree_family
 from Detector_maps import detect_a, detect_b
+from Quotient import quotient_cube_to_sphere
 
 # What we are actually plotting is the distance from a quotient-cube point to the basepoint. 
 # We use the quotient_cube_to_sphere representation: C^N / boundary(C^N) ~= S^N.
 # The basepoint is the north pole, so the returned value is its spherical geodesic distance from q.
 # Important note: this is just for plotting so it doesn't matter but we will have to think later about the model we want to use for our quotient: 
 # C^N / boundary(C^N) or S^N ? This will be key in degree computations.
+
+family = make_tree_family(a=3,b=2,N=3,)
 
 def detector_distance_to_basepoint(q, N):
 

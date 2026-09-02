@@ -3,8 +3,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-    """
+from Tree_building import *
+from Detector_maps import detect_a, detect_b
+"""
     Plot detector distance to the quotient basepoint on t=0 or t=1.
 
     For N=3, two coordinates of x are varied and the remaining
@@ -36,8 +37,9 @@ import matplotlib.pyplot as plt
     Returns
     -------
     fig, ax, distances, active
-    """
+"""
 
+family = make_tree_family(a=3,b=2,N=3,)
 
 def plot_detector_time_face(
     family,
