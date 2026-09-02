@@ -1,4 +1,6 @@
 ## Some examples of trees plotted for different values. 
+import numpy as np 
+import matplotlib.pyplot as plt
 
 from tree_plots import plot_tree_3d
 from Tree_building import tree_at, make_tree_family
