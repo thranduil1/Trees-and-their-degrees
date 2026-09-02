@@ -1,1 +1,229 @@
+\documentclass[12pt]{amsart}
 
+%%%%%%%%%%%%%%%%%%%%%%
+%----- PREAMBLE -----%
+%%%%%%%%%%%%%%%%%%%%%%
+
+%----- ENCODINGS -----%
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%----- TYPOGRAPHY -----%
+
+\usepackage[english]{babel}
+
+%----- MATH SYMBOLS -----%
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{dsfont}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+
+\usepackage{colonequals}
+
+%--- Trucs retirés par Werner ----%
+
+% \usepackage{latexsym}
+% \usepackage{changepage}
+% \usepackage{bbm}
+
+%----- COLORS -----%
+
+\usepackage{xcolor}
+\definecolor{forestgreen}{rgb}{0.27, 0.60, 0.46} 
+
+%----- FIGURES -----%
+
+\usepackage{graphicx}
+
+\usepackage{caption}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{tikz-cd}
+\usetikzlibrary{fpu}
+
+\usepackage{pgf}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+
+\usepackage{forest}
+
+\forestset{
+  Bseries/.style={
+    for tree={
+      grow'=90,
+      parent anchor=center,
+      child anchor=south,
+      minimum width=1pt,
+      inner sep=1pt,
+      s sep=3pt,
+      circle,
+      if level=1{
+        baseline
+      }{}
+    },
+    before computing xy={
+      for tree={
+        l= 12pt,
+      }
+    }
+  }
+}
+\newcommand\Bseries[1]{\Forest{Bseries #1}}
+
+% \usepackage[inkscapelatex=false]{svg}
+
+%----- PAGE LAYOUT -----%
+
+\oddsidemargin  =5mm
+\evensidemargin =5mm
+\topmargin      =5mm
+\textwidth      =150mm
+\textheight     =200mm
+
+\usepackage{changepage}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[L]{} % remove title from the header
+\fancyhead[R]{\thepage} % add page number on top right
+\renewcommand{\headrulewidth}{0pt} % removes horizontal mine
+\fancyfoot{} % empty the footer
+
+%----- BIBLIOGRAPHY -----%
+
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{Biblio.bib}
+
+%----- REVISIONS -----%
+
+\usepackage{todonotes}
+
+%----- LABELS -----%
+
+% \usepackage{upref}
+
+%----- HYPER LINKS -----%
+
+\usepackage{hyperref}
+\hypersetup{
+ colorlinks,
+ linkcolor={red!50!black},
+ citecolor={blue!50!black},
+ urlcolor={blue!80!black}
+}
+
+%----- THEOREM ENVS -----%
+
+\theoremstyle{plain}
+\newtheorem{teo}{Theorem}[section]
+\newtheorem{prop}[teo]{Proposition}
+\newtheorem{cor}[teo]{Corollary}
+\newtheorem{lem}[teo]{Lemma}
+\newtheorem{conj}[teo]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{defi}[teo]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{rema}[teo]{Remark}
+\newtheorem{remas}[teo]{Remarks}
+\newtheorem{exemple}[teo]{Example}
+\newtheorem{exemples}[teo]{Examples}
+\newtheorem{constr}[teo]{Construction}
+\newtheorem{por}[teo]{Porism}
+\newtheorem{notat}[teo]{Notation}
+
+%----- MACROS -----%
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Mon}{Mon}
+\DeclareMathOperator{\Op}{Op}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\SymMon}{SymMon}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\hocolim}{hocolim}
+\DeclareMathOperator{\colim}{colim}
+\DeclareMathOperator{\sSet}{sSet}
+\DeclareMathOperator{\emb}{emb}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\Diffeo}{Diffeo}
+\DeclareMathOperator{\Moore}{Moore}
+\DeclareMathOperator{\Conf}{Conf}
+\DeclareMathOperator{\UConf}{UConf}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\triv}{triv}
+\DeclareMathOperator{\Top}{Top}
+\DeclareMathOperator{\Diag}{Diag}
+\DeclareMathOperator{\Pos}{Pos}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\HT}{HT}
+\DeclareMathOperator{\BT}{BT}
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\standard}{standard}
+\DeclareMathOperator{\Spaces}{Spaces}
+\DeclareMathOperator{\Map}{Map}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ext}{ext}
+\DeclareMathOperator{\Max}{max}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Cof}{Cof}
+\DeclareMathOperator{\splitt}{split}
+\DeclareMathOperator{\glue}{glue}
+\DeclareMathOperator{\double}{double}
+\DeclareMathOperator{\pc}{pc}
+
+\newcommand{\Holink}{\mathcal{H}o\mathrm{Link}}
+\newcommand{\iso}{\overset{\sim}{=}}
+\newcommand{\op}{\mathcal{O}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\s}{\mathcal{S}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand\mlnode[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%----- DOCUMENT -----%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Trees and their degrees}
+\author{Marie-Camille Delarue}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+In the course of our study of the family of Higman--Thompson groups, 
+there came to be a question that was very easy to answer in small dimensions
+and much harder in higher dimensions.
+The fundamental reason for this was that it was easy to come up with a reasonable visualization in low dimensions,
+and much harder in higher dimensions because of the limitations of 3-dimensional space.
+Therefore, we tried to come up with a good visualization in higher dimensions.
+
+The following document explains this problem and the framework we came up with to answer it in higher dimensions.
+For extra context on the Thompson groups and their homology, please consult the other file in this folder.
+Reading the following document is however completely necessary to understanding the specific question we were working on as well as its implementation.
+
+\section{Trees}
+
+From now on, we will consider finite rooted trees.
+
+\end{document}
