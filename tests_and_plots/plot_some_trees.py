@@ -1,7 +1,7 @@
 ## Some examples of trees plotted for different values. 
 
 from tree_plots import plot_tree_3d
-from Tree_building import tree_at
+from Tree_building import tree_at, make_tree_family
 
 family = make_tree_family(
     a=3,

@@ -6,7 +6,7 @@
 import matplotlib.pyplot as plt
 from itertools import combinations, product
 
-from mathmodels/Tree_building import tree_at, make_tree_family, junctions
+from Tree_building import tree_at, make_tree_family, junctions
 
 def plot_tree_3d(
     tree,
