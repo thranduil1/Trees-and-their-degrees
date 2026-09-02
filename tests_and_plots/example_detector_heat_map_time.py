@@ -1,4 +1,5 @@
 # We are testing out the detector on 2D slices for t=0 and t=1.
+# Might be worth it to make a lot of these inside a single figure but we will see how it goes.
 
 import numpy as np 
 import matplotlib.pyplot as plt
