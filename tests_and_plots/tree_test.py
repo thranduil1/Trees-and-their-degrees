@@ -1,7 +1,7 @@
 
 # Example of the tree family - this is not as useful as the plots but that's okay
 
-from Tree_building.py import *
+from Tree_building import tree_at, make_tree_family
 
 if __name__ == "__main__":
     family = make_tree_family(
