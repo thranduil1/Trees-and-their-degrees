@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
-from dimension_one.making_tree import make_family_one, tree_at_one
+from making_tree import make_family_one, tree_at_one
 
 def draw_cube(ax, alpha=0.15):
     """Draw the unit cube [0,1]^3."""
