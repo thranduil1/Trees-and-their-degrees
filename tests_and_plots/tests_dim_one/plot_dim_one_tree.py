@@ -3,8 +3,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-from making_tree import make_family_one, tree_at_one
+from dimension_one.making_tree import make_family_one, tree_at_one
 
 def draw_cube(ax, alpha=0.15):
     """Draw the unit cube [0,1]^3."""
@@ -52,7 +53,7 @@ def draw_cube(ax, alpha=0.15):
     for face in faces:
         face_verts = vertices[face]
         ax.add_collection3d(
-            plt.Poly3DCollection(
+            Poly3DCollection(
                 [face_verts],
                 facecolor="lightgray",
                 alpha=alpha,
