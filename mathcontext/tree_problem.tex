@@ -44,6 +44,7 @@
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
 \usepackage{tikz-cd}
 \usetikzlibrary{fpu}
 
@@ -63,19 +64,43 @@
       inner sep=1pt,
       s sep=3pt,
       circle,
-      if level=1{
+      if level=0{
+        baseline
+      }{},
+      l = 3pt,
+      if n children=0{tier=terminal}{}
+    },
+    %before computing xy={
+    %  for tree={
+    %    l= 12pt,
+    %  }
+    %}
+  }
+}
+\newcommand\Bseries[1]{\Forest{Bseries #1}}
+
+\forestset{
+  Cseries/.style={
+    for tree={
+      grow'=90,
+      parent anchor=center,
+      child anchor=center,
+      minimum width=1pt,
+      inner sep=0pt,
+      s sep=2.5pt,
+      circle,
+      if level=0{
         baseline
       }{}
     },
     before computing xy={
       for tree={
-        l= 12pt,
+        l=5pt,
       }
     }
   }
 }
-\newcommand\Bseries[1]{\Forest{Bseries #1}}
-
+\newcommand\Cseries[1]{\Forest{Cseries #1}}
 % \usepackage[inkscapelatex=false]{svg}
 
 %----- PAGE LAYOUT -----%
@@ -224,6 +249,55 @@ Reading the following document is however completely necessary to understanding 
 
 \section{Trees}
 
-From now on, we will consider finite rooted trees.
+We will consider finite rooted trees, and we call an \textbf{$a$-junction} a vertex of the tree with one parent and $a$ children: 
+For instance, \Bseries{[[[][][]]]} is a 3-junction.
 
+\subsection{Trees with simple junctions}
+Let us start by considering the following problem.
+Consider a finite rooted tree which only has $a$-junctions, for $a$ an integer.
+We will think of trees as being oriented from the leaves to the root.
+Consider the following picture:
+\begin{center}
+  \begin{tikzpicture}
+    \draw (0,0) circle (2cm);
+
+\begin{scope}[very thick,decoration={
+  markings,
+  mark=at position 0.5 with {\arrow{>}}}
+  ] 
+  \draw[postaction={decorate}] (-2.8,2)--(0,0);
+  \draw[postaction={decorate}] (-3,0)--(0,0);
+  \draw[postaction={decorate}] (-2.8,-2)--(0,0);
+  \draw[postaction={decorate}] (0,0)--(3,0);
+\end{scope}
+  \end{tikzpicture}
+\end{center}
+We will call the \textbf{degree} of a junction the number of incoming edges minus the number of outgoing edges in a small circle around the junction.
+For any $a$-junction, this number is clearly $a-1$.
+
+Now let us assume we have trees with $a$-junctions and $b$-junctions. 
+The $a$-junctions have degree $a-1$, and the $b$-junctions have degree $b-1$.
+
+\subsection{Trees with double junctions}
+
+Now let us consider a family of trees with both $a$-junctions and $b$-junctions, for $a$ and $b$ two different integers, 
+with the following additional \textbf{interchange relation}:
+\begin{center}
+  \Bseries{[[, edge = orange,[, edge = purple][, edge = purple]][, edge = orange,[, edge = purple][, edge = purple]][,edge = orange,[, edge = purple][, edge = purple]]]} = \Bseries{[[, edge = purple,[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]}.
+\end{center} 
+Each $a$-junction has degree $a-1$ and each $b$-junction has degree $b-1$ again, 
+but what happens when the junctions are switching?
+We add an $ab$-junction which represents the switch:
+\begin{center}
+  \Bseries{[,phantom,s sep = 5pt,[[, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen]]
+  [[, edge = orange,label = {[label distance=0cm]180:$\rightarrow$}[, edge = purple][, edge = purple]][, edge = orange,[, edge = purple][, edge = purple]][,edge = orange,[, edge = purple][, edge = purple]]]]}
+  
+  
+   \Bseries{[,phantom,s sep = 5pt, [[, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen]]
+   [[, edge = purple,label = {[label distance=0.05cm]180:$\rightarrow$}[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]]}
+  \end{center}
+
+Now we've added an extra junction, and we would like to determine its degree. 
+We can't simply use the same rule that we did before.
+\textcolor{purple}{Say more about this + put my diagrams with the cubes that come together.}
 \end{document}
