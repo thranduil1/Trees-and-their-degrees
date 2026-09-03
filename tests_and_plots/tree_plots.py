@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from itertools import combinations, product
 
-from Tree_building import tree_at, make_tree_family, junctions
+from higher_dim.Tree_building import tree_at, make_tree_family, junctions
 
 def plot_tree_3d(
     tree,

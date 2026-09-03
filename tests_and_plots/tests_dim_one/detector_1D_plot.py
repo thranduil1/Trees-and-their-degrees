@@ -3,8 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from making_tree import make_family_one
-from detector_one import make_slice_detector_map
+from dimension_one.making_tree import make_family_one
+from dimension_one.detector_one import make_slice_detector_map
 
 # This function computes a grid of detector outputs and plots a heat map.
 # The heat map shows the Euclidean distance from each detector output to the center of the transverse cube. 

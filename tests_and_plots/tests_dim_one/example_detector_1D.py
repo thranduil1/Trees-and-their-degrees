@@ -1,10 +1,10 @@
-from making_tree import (
+from dimension_one.making_tree import (
     make_family_one
 )
 
-from detector_one import make_slice_detector_map
+from dimension_one.detector_one import make_slice_detector_map
 
-from plot_detector_heatmap import (
+from detector_1D_plot import (
     detector_heatmap,
     detector_vector_field,
 )

@@ -2,9 +2,9 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from Tree_building import make_tree_family, tree_at
+from higher_dim.Tree_building import make_tree_family, tree_at
 from tree_plots import plot_tree_3d
-from Detector_maps import detect_a, detect_b
+from higher_dim.Detector_maps import detect_a, detect_b
 
 family = make_tree_family(
     a=3,
