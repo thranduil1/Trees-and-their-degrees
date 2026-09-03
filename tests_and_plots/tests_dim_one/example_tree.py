@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from dimension_one.making_tree import (
+from making_tree import (
     make_family_one,
     tree_at_one,
 )
