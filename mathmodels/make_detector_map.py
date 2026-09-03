@@ -5,7 +5,7 @@ import numpy as np
 from Tree_building import tree_at
 from Detector_maps import detect_a, detect_b
 
-    """
+"""
     Construct the composite map
 
         f : C^(N+1) -> C^N / boundary(C^N)
@@ -19,7 +19,7 @@ from Detector_maps import detect_a, detect_b
     Returns:
         None            for the quotient basepoint
         NumPy array     for a point in (0, 1)^N
-    """
+"""
 
 def make_tree_detector_map(
     family,
