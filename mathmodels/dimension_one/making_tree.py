@@ -19,232 +19,134 @@ def join_space_time(transverse, time):
         [float(time)],
     ])
 
-import numpy as np
-
-
-import numpy as np
-
 
 def make_family_one(
-    ambient_dimension,
+    N,
     *,
-    junction_time=0.5,
     angle_degrees=30.0,
-    num_leafward_edges=None,
+    edge_length=1.0,
 ):
     """
-    One-dimensional detector family.
+    Family of one-junction trees for input p in [0,1]^N.
+
+    Transverse dimension d = N - 1.
+    Time coordinate index = d.
 
     Parameters
     ----------
-    ambient_dimension:
-        N, the dimension of the ambient cube [0,1]^N.
-
-    junction_time:
-        Fixed time-coordinate of the unique a-junction.
-
-    angle_degrees:
-        Fixed angle for all edges at the junction.
-
-    num_leafward_edges:
-        Number of leafward edges. If None, set to ambient_dimension.
-
-    The detector slice is always time=0.
-    """
-    if ambient_dimension < 2:
-        raise ValueError(
-            "ambient_dimension must be at least 2"
-        )
-
-    if not 0.0 < junction_time < 1.0:
-        raise ValueError(
-            "junction_time must lie strictly between 0 and 1"
-        )
-
-    if num_leafward_edges is None:
-        num_leafward_edges = ambient_dimension
-
-    if num_leafward_edges < 1:
-        raise ValueError(
-            "num_leafward_edges must be positive"
-        )
-
-    return {
-        "ambient_dimension": ambient_dimension,
-        "transverse_dimension": ambient_dimension - 1,
-        "junction_time": float(junction_time),
-        "angle_radians": np.deg2rad(
-            angle_degrees
-        ),
-        "num_leafward_edges": int(
-            num_leafward_edges
-        ),
-        "slice_time": 0.0,
-    }
-
-def a_junction_directions(
-    family,
-):
-    """
-    Return directions of all edges at the a-junction.
+    N : int
+        Dimension of the input cube [0,1]^N.
+    angle_degrees : float
+        Angle of leaf edges relative to the time axis.
+    edge_length : float
+        Length of root and leaf edges in space-time.
 
     Returns
     -------
-    rootward:
-        Unit direction pointing toward increasing time.
-    leafward:
-        List of unit directions pointing toward decreasing time.
+    family : dict
     """
-    transverse_dimension = family[
-        "transverse_dimension"
-    ]
-    angle = family["angle_radians"]
-    num_leafward = family["num_leafward_edges"]
+    if N < 2:
+        raise ValueError("N must be at least 2 (so that d = N-1 >= 1).")
 
-    # Rootward: purely in time direction.
-    rootward = np.zeros(
-        transverse_dimension + 1
-    )
-    rootward[-1] = 1.0
+    d = N - 1  # transverse dimension
+    time_coordinate = d
 
-    # Leafward: one per transverse direction.
-    leafward = []
+    angle = np.deg2rad(angle_degrees)
 
-    for i in range(num_leafward):
-        direction = np.zeros(
-            transverse_dimension + 1
-        )
+    # Root direction: purely in +time, no transverse component
+    root_direction = np.zeros(N, dtype=float)
+    root_direction[time_coordinate] = 1.0
 
-        if i < transverse_dimension:
-            direction[i] = np.sin(angle)
-
-        direction[-1] = -np.cos(angle)
-
-        leafward.append(direction)
-
-    return rootward, leafward
-    
-def ray_to_cube_boundary(
-    start,
-    direction,
-    tolerance=1e-12,
-):
-    """
-    Follow start + s*direction until it first reaches
-    the boundary of [0,1]^N.
-    """
-    start = np.asarray(start, dtype=float)
-    direction = np.asarray(
-        direction,
+    # Leaf directions: symmetric in transverse space, negative in time
+    # For simplicity, take two opposite transverse directions in a chosen 2D subspace.
+    # You can generalize this to more leaves if needed.
+    leaf_directions = np.array(
+        [
+            np.concatenate(
+                [
+                    np.array([np.sin(angle), 0.0] + [0.0] * (d - 2)),
+                    [-np.cos(angle)],
+                ]
+            ),
+            np.concatenate(
+                [
+                    np.array([-np.sin(angle), 0.0] + [0.0] * (d - 2)),
+                    [-np.cos(angle)],
+                ]
+            ),
+        ],
         dtype=float,
     )
 
-    candidates = []
+    return {
+        "N": N,
+        "transverse_dimension": d,
+        "time_coordinate": time_coordinate,
+        "edge_length": float(edge_length),
+        "root_direction": root_direction,
+        "leaf_directions": leaf_directions,
+        "angle_degrees": float(angle_degrees),
+    }
 
-    for coordinate in range(len(start)):
-        if direction[coordinate] > tolerance:
-            candidates.append(
-                (1.0 - start[coordinate])
-                / direction[coordinate]
-            )
-
-        elif direction[coordinate] < -tolerance:
-            candidates.append(
-                -start[coordinate]
-                / direction[coordinate]
-            )
-
-    positive = [
-        value
-        for value in candidates
-        if value > tolerance
-    ]
-
-    if not positive:
-        raise RuntimeError(
-            "Ray does not meet cube boundary."
-        )
-
-    scale = min(positive)
-
-    return start + scale * direction
-
-
-def tree_at_one(
-    family,
-    x,
-):
+def tree_at_one(family, p):
     """
-    Construct the tree for transverse parameter x.
+    Build a one-junction tree for input p in [0,1]^N.
 
-    The tree has:
-    - one a-junction at (x, junction_time);
-    - one rootward edge;
-    - num_leafward_edges leafward edges.
+    Junction transverse coordinates = first N-1 coords of p.
+    Junction time = last coord of p.
+
+    Parameters
+    ----------
+    family : dict
+        From make_family.
+    p : array_like
+        Point in [0,1]^N.
+
+    Returns
+    -------
+    tree : dict
     """
-    x = np.asarray(x, dtype=float)
+    N = family["N"]
+    d = family["transverse_dimension"]
+    time_coordinate = family["time_coordinate"]
+    edge_length = family["edge_length"]
 
-    transverse_dimension = family[
-        "transverse_dimension"
-    ]
+    root_direction = family["root_direction"]
+    leaf_directions = family["leaf_directions"]
 
-    if x.shape != (transverse_dimension,):
-        raise ValueError(
-            "x has the wrong transverse dimension."
-        )
+    p = np.asarray(p, dtype=float)
 
-    if np.any(x < 0.0) or np.any(x > 1.0):
-        raise ValueError(
-            "x must lie in [0,1]^(N-1)."
-        )
+    if p.shape != (N,):
+        raise ValueError(f"p must have shape ({N},), got {p.shape}")
 
-    junction = np.concatenate([
-        x,
-        [family["junction_time"]],
-    ])
+    # Junction = (transverse, time) = (p_1,...,p_{N-1}, p_N)
+    junction = p.copy()
 
-    rootward, leafward = a_junction_directions(
-        family
-    )
+    # Root vertex
+    root = junction + edge_length * root_direction
 
-    root = ray_to_cube_boundary(
-        junction,
-        rootward,
-    )
-
+    # Leaf vertices
     leaves = [
-        ray_to_cube_boundary(
-            junction,
-            direction,
-        )
-        for direction in leafward
+        junction + edge_length * v for v in leaf_directions
     ]
 
     vertices = {
         "a0": junction,
         "root": root,
     }
-
-    vertex_type = {
-        "a0": "a",
-        "root": "root",
-    }
+    for i, leaf in enumerate(leaves):
+        vertices[f"leaf{i}"] = leaf
 
     edges = [
         ("a0", "root"),
+    ] + [
+        ("a0", f"leaf{i}") for i in range(len(leaves))
     ]
 
-    for i, leaf in enumerate(leaves):
-        name = f"leaf{i}"
-        vertices[name] = leaf
-        vertex_type[name] = "leaf"
-        edges.append(
-            (name, "a0")
-        )
-
     return {
+        "N": N,
+        "transverse_dimension": d,
+        "time_coordinate": time_coordinate,
         "vertices": vertices,
-        "vertex_type": vertex_type,
         "edges": edges,
-        "time_coordinate": transverse_dimension,
     }
