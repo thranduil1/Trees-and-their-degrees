@@ -20,14 +20,19 @@ def join_space_time(transverse, time):
     ])
 
 
+import numpy as np
+
+
 def make_family_one(
     N,
     *,
+    a,
     angle_degrees=30.0,
     edge_length=1.0,
 ):
     """
-    Family of one-junction trees for input p in [0,1]^N.
+    Family of one-junction trees for input p in [0,1]^N,
+    with an a-ary junction (1 root edge, a leaf edges).
 
     Transverse dimension d = N - 1.
     Time coordinate index = d.
@@ -36,6 +41,8 @@ def make_family_one(
     ----------
     N : int
         Dimension of the input cube [0,1]^N.
+    a : int
+        Number of leaf edges (branching number).
     angle_degrees : float
         Angle of leaf edges relative to the time axis.
     edge_length : float
@@ -47,6 +54,8 @@ def make_family_one(
     """
     if N < 2:
         raise ValueError("N must be at least 2 (so that d = N-1 >= 1).")
+    if a < 1:
+        raise ValueError("a must be at least 1.")
 
     d = N - 1  # transverse dimension
     time_coordinate = d
@@ -57,26 +66,28 @@ def make_family_one(
     root_direction = np.zeros(N, dtype=float)
     root_direction[time_coordinate] = 1.0
 
-    # Leaf directions: symmetric in transverse space, negative in time
-    # For simplicity, take two opposite transverse directions in a chosen 2D subspace.
-    # You can generalize this to more leaves if needed.
-    leaf_directions = np.array(
-        [
-            np.concatenate(
-                [
-                    np.array([np.sin(angle), 0.0] + [0.0] * (d - 2)),
-                    [-np.cos(angle)],
-                ]
-            ),
-            np.concatenate(
-                [
-                    np.array([-np.sin(angle), 0.0] + [0.0] * (d - 2)),
-                    [-np.cos(angle)],
-                ]
-            ),
-        ],
-        dtype=float,
-    )
+    # Leaf directions: a symmetric directions in transverse space,
+    # all with the same negative time component.
+    #
+    # We embed them in a 2D subspace of the transverse space for simplicity:
+    # angles theta_k = 2π k / a, k = 0,...,a-1.
+    leaf_directions = []
+    for k in range(a):
+        theta = 2.0 * np.pi * k / a
+        transverse = np.zeros(d, dtype=float)
+        if d >= 2:
+            # Put the angular pattern in the first two transverse coords
+            transverse[0] = np.sin(angle) * np.cos(theta)
+            transverse[1] = np.sin(angle) * np.sin(theta)
+        elif d == 1:
+            # In 1D transverse space, alternate left/right
+            transverse[0] = np.sin(angle) * (1 if k % 2 == 0 else -1)
+        time_component = -np.cos(angle)
+
+        direction = np.concatenate([transverse, [time_component]])
+        leaf_directions.append(direction)
+
+    leaf_directions = np.array(leaf_directions, dtype=float)
 
     return {
         "N": N,
@@ -85,12 +96,14 @@ def make_family_one(
         "edge_length": float(edge_length),
         "root_direction": root_direction,
         "leaf_directions": leaf_directions,
+        "a": int(a),
         "angle_degrees": float(angle_degrees),
     }
 
 def tree_at_one(family, p):
     """
-    Build a one-junction tree for input p in [0,1]^N.
+    Build a one-junction tree for input p in [0,1]^N,
+    with an a-ary junction (1 root, a leaves).
 
     Junction transverse coordinates = first N-1 coords of p.
     Junction time = last coord of p.
@@ -110,9 +123,10 @@ def tree_at_one(family, p):
     d = family["transverse_dimension"]
     time_coordinate = family["time_coordinate"]
     edge_length = family["edge_length"]
+    a = family["a"]
 
     root_direction = family["root_direction"]
-    leaf_directions = family["leaf_directions"]
+    leaf_directions = family["leaf_directions"]  # shape (a, N)
 
     p = np.asarray(p, dtype=float)
 
@@ -137,16 +151,16 @@ def tree_at_one(family, p):
     for i, leaf in enumerate(leaves):
         vertices[f"leaf{i}"] = leaf
 
-    edges = [
-        ("a0", "root"),
-    ] + [
-        ("a0", f"leaf{i}") for i in range(len(leaves))
+    edges = [("a0", "root")] + [
+        ("a0", f"leaf{i}") for i in range(a)
     ]
 
     return {
         "N": N,
         "transverse_dimension": d,
         "time_coordinate": time_coordinate,
+        "a": a,
         "vertices": vertices,
         "edges": edges,
     }
+    
