@@ -3,3 +3,4 @@
 \contentsline {section}{\tocsection {}{2}{Trees}}{1}{section.2}%
 \contentsline {subsection}{\tocsubsection {}{2.1}{Trees with simple junctions}}{2}{subsection.2.1}%
 \contentsline {subsection}{\tocsubsection {}{2.2}{Trees with double junctions}}{2}{subsection.2.2}%
+\contentsline {subsection}{\tocsubsection {}{2.3}{New degree definition}}{3}{subsection.2.3}%

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  3 SEP 2026 18:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  4 SEP 2026 21:53
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1042,30 +1042,38 @@ Package fancyhdr Warning: \headheight is too small (8.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
 
-[2] (./tree_problem.aux)
+[2]
+
+Package fancyhdr Warning: \headheight is too small (8.0pt): 
+(fancyhdr)                Make it at least 14.0pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.0pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
+
+[3] (./tree_problem.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
 Package rerunfilecheck Info: File `tree_problem.out' has not changed.
-(rerunfilecheck)             Checksum: F0341D072A573724832584FD1ABB87EF;665.
+(rerunfilecheck)             Checksum: 5AA11004D1BD3AAF61A4E8466BBCA52B;861.
 Package logreq Info: Writing requests to 'tree_problem.run.xml'.
 \openout1 = `tree_problem.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 55175 strings out of 474273
- 1303684 string characters out of 5747714
- 2153115 words of memory out of 5000000
- 76501 multiletter control sequences out of 15000+600000
+ 55178 strings out of 474273
+ 1303720 string characters out of 5747714
+ 2154115 words of memory out of 5000000
+ 76502 multiletter control sequences out of 15000+600000
  571055 words of font info for 80 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  126i,11n,133p,1643b,2751s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on tree_problem.pdf (2 pages, 109283 bytes).
+Output written on tree_problem.pdf (3 pages, 111700 bytes).
 PDF statistics:
- 90 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
- 8 named destinations out of 1000 (max. 500000)
- 45 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 99 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
+ 10 named destinations out of 1000 (max. 500000)
+ 53 words of extra memory for PDF output out of 10000 (max. 10000000)
 
