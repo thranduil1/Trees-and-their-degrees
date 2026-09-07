@@ -6,191 +6,78 @@ def edge_slice_intersection(
     end,
     *,
     slice_time=0.0,
-    time_coordinate=-1,
-    tolerance=1e-12,
+    time_coordinate,
 ):
-    """
-    Intersect segment [start,end] with time = slice_time.
-    Return transverse coordinates or None.
-    """
     start = np.asarray(start, dtype=float)
     end = np.asarray(end, dtype=float)
 
     start_time = start[time_coordinate]
     end_time = end[time_coordinate]
 
-    denominator = end_time - start_time
-
-    if abs(denominator) < tolerance:
+    if (start_time - slice_time) * (end_time - slice_time) > 0:
         return None
 
-    parameter = (
-        (slice_time - start_time)
-        / denominator
-    )
-
-    if parameter < -tolerance:
+    denom = end_time - start_time
+    if abs(denom) < 1e-12:
+        if abs(start_time - slice_time) < 1e-12:
+            return start.copy()
         return None
 
-    if parameter > 1.0 + tolerance:
+    t = (slice_time - start_time) / denom
+    if not (0.0 <= t <= 1.0):
         return None
 
-    point = start + parameter * (
-        end - start
-    )
+    return start + t * (end - start)
 
-    transverse = np.delete(
-        point,
-        time_coordinate,
-    )
-
-    if np.any(transverse < -tolerance):
-        return None
-
-    if np.any(transverse > 1.0 + tolerance):
-        return None
-
-    return np.clip(
-        transverse,
-        0.0,
-        1.0,
-    )
-
-def closest_intersection_to_center(
-    intersections,
-    center=None,
-    tolerance=1e-12,
-):
+def one_dimensional_detector(family, p, *, slice_time):
     """
-    Given a list of intersection points in [0,1]^(N-1),
-    return the unique one closest to the center.
+    Detector map for input p in [0,1]^N.
 
-    If there is a tie, return None (basepoint).
+    Intersects the tree with the time slice t = slice_time.
+    Returns a point in [0,1]^{N-1} (transverse space) or None (basepoint).
     """
-    if not intersections:
-        return None
+    N = family["N"]
+    d = family["transverse_dimension"]
+    time_coordinate = family["time_coordinate"]
 
-    if center is None:
-        center = np.full(
-            len(intersections[0]),
-            0.5,
-        )
-
-    distances = [
-        np.linalg.norm(
-            point - center
-        )
-        for point in intersections
-    ]
-
-    min_distance = min(distances)
-
-    closest = [
-        point
-        for point, dist in zip(
-            intersections,
-            distances,
-        )
-        if abs(dist - min_distance) < tolerance
-    ]
-
-    if len(closest) != 1:
-        return None
-
-    return closest[0]
-
-def one_dimensional_detector(
-    tree,
-    *,
-    slice_time=0.0,
-    tolerance=1e-12,
-):
-    """
-    Detector for the one-dimensional family.
-
-    Returns:
-        a point in [0,1]^(N-1), or
-        None for the quotient basepoint.
-    """
+    tree = tree_at_one(family, p)
     vertices = tree["vertices"]
-    time_coordinate = tree.get(
-        "time_coordinate",
-        -1,
-    )
+    edges = tree["edges"]
 
-    rootward_intersection = None
-    leafward_intersections = []
+    rootward_edge = ("a0", "root")
+    leafward_edges = [
+        e for e in edges if e != rootward_edge
+    ]
 
-    for left_name, right_name in tree["edges"]:
-        intersection = edge_slice_intersection(
+    def intersect_edge(left_name, right_name):
+        return edge_slice_intersection(
             vertices[left_name],
             vertices[right_name],
             slice_time=slice_time,
             time_coordinate=time_coordinate,
-            tolerance=tolerance,
         )
 
-        if intersection is None:
-            continue
+    rootward_intersection = intersect_edge(*rootward_edge)
 
-        vertex_type = tree["vertex_type"]
-
-        if (
-            vertex_type.get(left_name) == "a"
-            and vertex_type.get(right_name) == "root"
-        ) or (
-            vertex_type.get(left_name) == "root"
-            and vertex_type.get(right_name) == "a"
-        ):
-            rootward_intersection = intersection
-
-        elif (
-            vertex_type.get(left_name) == "leaf"
-            or vertex_type.get(right_name) == "leaf"
-        ):
-            leafward_intersections.append(
-                intersection
-            )
-
-    # Case 1: rootward edge intersects the slice.
     if rootward_intersection is not None:
-        return rootward_intersection
+        return rootward_intersection[:d]
 
-    # Case 2: all leafward edges intersect the slice.
-    num_leafward = len([
-        name
-        for name, kind in tree["vertex_type"].items()
-        if kind == "leaf"
-    ])
+    leaf_intersections = []
+    for e in leafward_edges:
+        pt = intersect_edge(*e)
+        if pt is None:
+            return None  # not all leafward edges hit the slice
+        leaf_intersections.append(pt)
 
-    if len(leafward_intersections) == num_leafward:
-        return closest_intersection_to_center(
-            leafward_intersections,
-            tolerance=tolerance,
-        )
+    center = np.full(d, 0.5)
 
-    # Otherwise: no valid output.
-    return None
+    def dist_to_center(pt):
+        return np.linalg.norm(pt[:d] - center)
 
-def make_slice_detector_map(
-    family,
-):
-    """
-    Return the map
+    closest = min(leaf_intersections, key=dist_to_center)
+    return closest[:d]
 
-        [0,1]^(N-1) -> [0,1]^(N-1) / boundary.
-
-    Output None represents the quotient basepoint.
-    """
-    def detector_map(x):
-        tree = tree_at_one(
-            family,
-            x,
-        )
-
-        return one_dimensional_detector(
-            tree,
-            slice_time=family["slice_time"],
-        )
-
+def make_slice_detector_map(family, slice_time=0.5):
+    def detector_map(p):
+        return one_dimensional_detector(family, p, slice_time = slice_time)
     return detector_map
