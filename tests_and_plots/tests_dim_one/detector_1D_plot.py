@@ -10,23 +10,75 @@ from dimension_one.detector_one import make_slice_detector_map
 # The heat map shows the Euclidean distance from each detector output to the center of the transverse cube. 
 # Points sent to the basepoint (None) are shown in white.
 
-def detector_heatmap(
+## Detector heat map
+
+"""
+Heat map for N=3 detector, with one coordinate fixed.
+
+Colors each (p_i, p_j) by distance of the detector output to the
+boundary of the transverse square [0,1]^2. Basepoint outputs are
+shown as NaN (white/transparent).
+"""
+
+def distance_to_boundary(q):
+    """
+    Distance from q in [0,1]^2 to the boundary of the square.
+
+    Returns a scalar in [0, 0.5].
+    """
+    if q is None:
+        return np.nan
+    q = np.asarray(q, dtype=float)
+    if q.shape != (2,):
+        raise ValueError("q must be in R^2")
+    return float(
+        min(
+            q[0],
+            1.0 - q[0],
+            q[1],
+            1.0 - q[1],
+        )
+    )
+
+
+def detector_heatmap_N3(
     family,
     *,
+    fixed_coord="p3",
+    fixed_value=0.5,
     samples=101,
     cmap="viridis",
+    slice_time = 0.5
 ):
-    transverse_dimension = family["transverse_dimension"]
+    """
+    Plot a 2D heat map of the detector for N=3.
 
-    if transverse_dimension != 2:
-        raise ValueError(
-            "Heat map currently implemented only for "
-            "transverse dimension 2."
-        )
+    Parameters
+    ----------
+    family : dict
+        From make_family with N=3.
+    fixed_coord : {"p1", "p2", "p3"}
+        Which input coordinate to fix.
+    fixed_value : float
+        Value at which to fix that coordinate (in [0,1]).
+    samples : int
+        Number of samples per axis.
+    cmap : str
+        Matplotlib colormap.
 
-    detector_map = make_slice_detector_map(
-        family,
-    )
+    Returns
+    -------
+    fig, ax, grid, values
+    """
+
+    if family["N"] != 3:
+        raise ValueError("This heat map is for N=3 only.")
+
+    d = family["transverse_dimension"]
+    if d != 2:
+        raise ValueError("Expected transverse_dimension=2 for N=3.")
+
+    detector_map = make_slice_detector_map(family, slice_time)
 
     xs = np.linspace(0.0, 1.0, samples)
     ys = np.linspace(0.0, 1.0, samples)
@@ -43,25 +95,25 @@ def detector_heatmap(
         dtype=object,
     )
 
-    for i, point in enumerate(grid):
-        values[i] = detector_map(point)
+    for i, (x, y) in enumerate(grid):
+        if fixed_coord == "p1":
+            p = np.array([fixed_value, x, y])
+        elif fixed_coord == "p2":
+            p = np.array([x, fixed_value, y])
+        elif fixed_coord == "p3":
+            p = np.array([x, y, fixed_value])
+        else:
+            raise ValueError("fixed_coord must be 'p1', 'p2', or 'p3'.")
 
-    center = np.full(transverse_dimension, 0.5)
+        out = detector_map(p)
+        values[i] = out
 
-    distances = np.empty(
-        grid.shape[0],
+    dists = np.array(
+        [distance_to_boundary(v) for v in values],
         dtype=float,
     )
 
-    for i, val in enumerate(values):
-        if val is None:
-            distances[i] = np.nan
-        else:
-            distances[i] = np.linalg.norm(
-                np.asarray(val) - center
-            )
-
-    Z = distances.reshape(X.shape)
+    Z = dists.reshape(X.shape)
 
     fig, ax = plt.subplots(
         figsize=(6, 5),
@@ -78,83 +130,25 @@ def detector_heatmap(
     cbar = fig.colorbar(
         im,
         ax=ax,
-        label="Distance to center",
+        label="Distance to boundary",
     )
 
-    ax.set_xlabel("x1")
-    ax.set_ylabel("x2")
-    ax.set_title("Detector heat map")
+    # Label axes according to which coordinates are varying
+    if fixed_coord == "p1":
+        ax.set_xlabel("p2")
+        ax.set_ylabel("p3")
+        title = f"N=3 detector (p1={fixed_value:.2f} fixed)"
+    elif fixed_coord == "p2":
+        ax.set_xlabel("p1")
+        ax.set_ylabel("p3")
+        title = f"N=3 detector (p2={fixed_value:.2f} fixed)"
+    else:  # p3
+        ax.set_xlabel("p1")
+        ax.set_ylabel("p2")
+        title = f"N=3 detector (p3={fixed_value:.2f} fixed)"
+
+    ax.set_title(title)
 
     plt.tight_layout()
 
     return fig, ax, grid, values
-
-
-def detector_vector_field(
-    family,
-    *,
-    samples=21,
-    arrow_scale=0.15,
-):
-    """
-    Plot the detector as a vector field: arrows from input x
-    to output f(x). Basepoint outputs are omitted.
-    """
-    transverse_dimension = family["transverse_dimension"]
-
-    if transverse_dimension != 2:
-        raise ValueError(
-            "Vector field currently implemented only for "
-            "transverse dimension 2."
-        )
-
-    detector_map = make_slice_detector_map(
-        family,
-    )
-
-    xs = np.linspace(0.0, 1.0, samples)
-    ys = np.linspace(0.0, 1.0, samples)
-
-    X, Y = np.meshgrid(xs, ys)
-
-    U = np.full_like(X, np.nan)
-    V = np.full_like(Y, np.nan)
-
-    for i in range(samples):
-        for j in range(samples):
-            x = np.array([xs[j], ys[i]])
-
-            out = detector_map(x)
-
-            if out is None:
-                continue
-
-            out = np.asarray(out, dtype=float)
-
-            U[i, j] = out[0] - x[0]
-            V[i, j] = out[1] - x[1]
-
-    fig, ax = plt.subplots(
-        figsize=(6, 5),
-    )
-
-    ax.quiver(
-        X, Y, U, V,
-        angles="xy",
-        scale_units="xy",
-        scale=1.0 / arrow_scale,
-        width=0.004,
-        color="blue",
-    )
-
-    ax.set_xlim(0.0, 1.0)
-    ax.set_ylim(0.0, 1.0)
-    ax.set_aspect("equal")
-
-    ax.set_xlabel("x1")
-    ax.set_ylabel("x2")
-    ax.set_title("Detector vector field")
-
-    plt.tight_layout()
-
-    return fig, ax, X, Y, U, V
