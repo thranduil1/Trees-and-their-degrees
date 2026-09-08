@@ -305,7 +305,13 @@ Let's assume we have an $ab$-junction of this form:
 
 In a neighborhood of this $ab$-junction however, we have two very different pictures.
 So if we move just a little bit away from the $ab$-junction, we can end up in two very different scenarios which have different degrees.
-\textcolor{purple}{Rephrase this in terms of stability, and also make some pictures on Inkscape.}
+\begin{figure}
+\def\svgwidth{0.5\hsize}
+\input{neighb.pdf_tex}
+\label{neighborhood}
+\caption{Two trees very close to each other but with very different "local images". 
+The trees are drawn in the direction they are oriented.}
+\end{figure}
 
 \subsection{New degree definition}
 Let's give another definition of the degree by going back to the case of a simple junction.
@@ -314,6 +320,33 @@ $a$ time with positive orientation and once with negative orientation, and so we
 
 We will find the degree of the $ab$-junction by traveling around it and recording what we see.
 Because the $ab$-junction lives in "higher dimension", we need to count the number of $a$-junctions and $b$-junctions that we see around it, not just paths.
-\textcolor{purple}{Explain this better, this is a bad explanation so far.}
+\begin{figure}
+\begin{center}
+  \begin{tikzpicture}
+    \draw[draw = purple] (0,0) circle (2cm);
+    % Tiny circles on boundary
+    \draw[draw = purple] (-1.65,1.1) circle (0.4cm);
+    \draw[draw = purple] (-2,0) circle (0.4cm);
+    \draw[draw = purple] (2,0) circle (0.4cm);
+    \draw[draw = purple] (-1.65,-1.1) circle (0.4cm);
 
+\begin{scope}[very thick,decoration={
+  markings,
+  mark=at position 0.5 with {\arrow{>}}}
+  ] 
+  \draw[postaction={decorate}] (-2.8,2)--(0,0);
+  \draw[postaction={decorate}] (-3,0)--(0,0);
+  \draw[postaction={decorate}] (-2.8,-2)--(0,0);
+  \draw[postaction={decorate}] (0,0)--(3,0);
+\end{scope}
+  \end{tikzpicture}
+\end{center}
+\label{simplej}
+\caption{The case of a simple junction}
+\end{figure}
+
+\textcolor{purple}{Explain this better.
+Also I should try to make a picture for the bigger junctions but I'm just not sure how}
+
+This is the basis of the heuristic we will follow.
 \end{document}
