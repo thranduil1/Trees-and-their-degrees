@@ -1,6 +1,6 @@
 
-"""Numerical degree estimator for detector boundary maps.
-
+"""Here we want to estimate the degree of the detector.
+Recall that 
 For a cube input p in [0,1]^N, this uses only the two faces p_N=0
 and p_N=1.  It assumes all other boundary faces map to the basepoint
 in the quotient.  On each contributing face, the detector produces a
@@ -8,25 +8,25 @@ map [0,1]^(N-1) / boundary -> itself; its degree is computed using a
 regular-value / oriented-Jacobian estimate. There is more info on how this works in the mathcontext folder.
 """
 
-# Document this more!
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 from dimension_one.detector_one import make_slice_detector_map
 
+##  Distance from q in [0,1]^d to its boundary.
+
 def distance_to_cube_boundary(q):
-    """Distance from q in [0,1]^d to its boundary."""
     q = np.asarray(q, dtype=float)
     return float(np.min(np.minimum(q, 1.0 - q)))
 
 
-def detector_output_interior(detector_map, p, *, boundary_tol=1e-9):
-    """Return the output if it is strictly inside its transverse cube.
+"""Return the output if it is strictly inside its transverse cube.
 
     ``None`` is used for the quotient basepoint.  Any output on the
     transverse boundary also represents the quotient basepoint.
-    """
+"""
+
+def detector_output_interior(detector_map, p, *, boundary_tol=1e-9):
     q = detector_map(np.asarray(p, dtype=float))
     if q is None:
         return None
@@ -38,6 +38,7 @@ def detector_output_interior(detector_map, p, *, boundary_tol=1e-9):
         return None
     return q
 
+# We restrict our detector map to certain faces.
 
 def _face_map(detector_map, d, time_value, x, boundary_tol):
     p = np.empty(d + 1, dtype=float)
@@ -49,6 +50,7 @@ def _face_map(detector_map, d, time_value, x, boundary_tol):
         boundary_tol=boundary_tol,
     )
 
+# We compute the associated Jacobians
 
 def _jacobian_on_face(face_map, x, h, d):
     """Central-difference Jacobian, or None if we hit basepoint."""
@@ -70,6 +72,15 @@ def _jacobian_on_face(face_map, x, h, d):
 
     return jac
 
+"""Now we can estimate the relative degree on both time faces.
+
+    Searches a uniform grid for cells whose detector outputs surround
+    ``regular_value``.  A Newton refinement in the cell gives a
+    preimage; each preimage contributes sign(det(Df)).
+
+    May encounter problems with the selection of the regular value - 
+    although our map here is nice, this will be more of a problem for the complicated junctions.
+"""
 
 def degree_on_time_face(
     detector_map,
@@ -81,16 +92,7 @@ def degree_on_time_face(
     boundary_tol=1e-7,
     root_tol=None,
 ):
-    """Estimate the relative degree on p_N = time_value.
-
-    Searches a uniform grid for cells whose detector outputs surround
-    ``regular_value``.  A Newton refinement in the cell gives a
-    preimage; each preimage contributes sign(det(Df)).
-
-    This is most reliable when the map is continuous and the selected
-    regular value is away from the quotient basepoint and critical
-    values.
-    """
+   
     if N < 2:
         raise ValueError("N must be at least 2.")
     if time_value not in (0.0, 1.0):
@@ -205,6 +207,15 @@ def degree_on_time_face(
     }
 
 
+"""Now we put all of this together to estimate the degree of the boundary detector map.
+
+    Assumption: the side faces p_i=0 or 1 for i < N are sent to the
+    quotient basepoint, so only p_N=0 and p_N=1 contribute.
+
+    With the standard boundary orientation of [0,1]^N, the t=1 face
+    has positive orientation and the t=0 face has negative orientation, so degree = degree(t=1) - degree(t=0).
+"""
+
 def detector_boundary_degree(
     family,
     *,
@@ -212,15 +223,6 @@ def detector_boundary_degree(
     samples=61,
     boundary_tol=1e-7,
 ):
-    """Estimate the degree of the boundary detector map.
-
-    Assumption: the side faces p_i=0 or 1 for i < N are sent to the
-    quotient basepoint, so only p_N=0 and p_N=1 contribute.
-
-    With the standard boundary orientation of [0,1]^N, the t=1 face
-    has positive orientation and the t=0 face has negative orientation.
-    Thus degree = degree(t=1) - degree(t=0).
-    """
 
     N = int(family["N"])
     detector_map = make_slice_detector_map(family)
