@@ -6,7 +6,6 @@ from dimension_one.detector_one import make_slice_detector_map
 
 from detector_1D_plot import (
     detector_heatmap_N3,
-    detector_vector_field,
 )
 
 import matplotlib.pyplot as plt
