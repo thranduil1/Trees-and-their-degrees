@@ -1,12 +1,12 @@
 import numpy as np
 
-def sample_outputs(time_value, samples=61, f_a):
+def sample_outputs(time_value, f, samples=61):
     N = family["N"]
     outputs = []
     for index in np.ndindex(*(samples for _ in range(N))):
         x = np.array(index, dtype=float) / (samples - 1)
         p = np.concatenate([x, [time_value]])
-        q = f_a(p)
+        q = f(p)
         if q is not None:
             outputs.append(q)
     return np.array(outputs) if outputs else np.empty((0, N))
