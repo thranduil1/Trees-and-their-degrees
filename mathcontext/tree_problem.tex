@@ -285,9 +285,9 @@ with the following additional \textbf{interchange relation}:
 \begin{center}
   \Bseries{[[, edge = orange,[, edge = purple][, edge = purple]][, edge = orange,[, edge = purple][, edge = purple]][,edge = orange,[, edge = purple][, edge = purple]]]} = \Bseries{[[, edge = purple,[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]}.
 \end{center} 
-Each $a$-junction has degree $a-1$ and each $b$-junction has degree $b-1$ again, 
-but what happens when the junctions are switching?
-We add an $ab$-junction which represents the switch:
+How can we represent this equality topologically?
+In topology, we can always relax an equality between two objects by creating a path between them.
+We add an $ab$-junction which represents this path:
 \begin{center}
   \Bseries{[,phantom,s sep = 5pt,[[, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen]]
   [[, edge = orange,label = {[label distance=0cm]180:$\rightarrow$}[, edge = purple][, edge = purple]][, edge = orange,[, edge = purple][, edge = purple]][,edge = orange,[, edge = purple][, edge = purple]]]]}
@@ -296,8 +296,15 @@ We add an $ab$-junction which represents the switch:
    \Bseries{[,phantom,s sep = 5pt, [[, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen]]
    [[, edge = purple,label = {[label distance=0.05cm]180:$\rightarrow$}[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]]}
   \end{center}
+The idea is that if our tree lives in dimension $N$, we are adding an extra dimension which represents time.
+The position of $t$ in $[0,1]$ indicates what the form of the tree is in a continuous way as depicted in figure \ref{time}.
+Now our tree is parametrized by an element in $[0,1]^{N+1}$.
 
-Now we've added an extra junction, and we would like to determine its degree. 
+In the program, there is a function $make_family$ which holds the combinatorial information about the tree,
+and a function $tree_at$ which to a point in $[0,1]^{N+1}$ and the combinatorial information of the tree
+associates the corresponding embedding of a tree inside a unit cube $[0,1]^N$.
+
+We would like to determine the degree of this extra junction. 
 It is tempting to say that the degree of this junction is $ab-1$.
 However, this does not really work, in part because our definition of degree is not precise enough.
 
@@ -317,9 +324,6 @@ The trees are drawn in the direction they are oriented.}
 Let's give another definition of the degree by going back to the case of a simple junction.
 If we imagine a smaller lens traveling around the junction and recording what it sees, we will see a single path $a+1$ times:
 $a$ time with positive orientation and once with negative orientation, and so we recover a degree of $a-1$.
-
-We will find the degree of the $ab$-junction by traveling around it and recording what we see.
-Because the $ab$-junction lives in "higher dimension", we need to count the number of $a$-junctions and $b$-junctions that we see around it, not just paths.
 \begin{figure}
 \begin{center}
   \begin{tikzpicture}
@@ -345,8 +349,27 @@ Because the $ab$-junction lives in "higher dimension", we need to count the numb
 \caption{The case of a simple junction}
 \end{figure}
 
-\textcolor{purple}{Explain this better.
-Also I should try to make a picture for the bigger junctions but I'm just not sure how}
+We will find the degree of the $ab$-junction by traveling around it and recording what we see.
+Because the $ab$-junction lives in "higher dimension", we need to count the number of $a$-junctions and $b$-junctions that we see around it, not just paths.
 
-This is the basis of the heuristic we will follow.
+\textcolor{purple}{Explain this better.
+Also I should try to make a picture for the bigger junctions but I'm just not sure how,
+the point is that it's hard}
+
+This is the basis of the heuristic we will follow to define the detector map.
+
+\section{Defining the detector map}
+We create a detector $a$-junctions, and one for $b$-junctions,
+in the same way with the following procedure.
+Given a specific embedding of a tree,
+we look at a smaller detector cube centered inside the unit cube and we record what it contains.
+
+
+\section{Degree of a map between spheres}
+The notion of degree we defined in the file tree-problem is closely related 
+to the notion of degree of maps between spheres.
+Basically, the degree of a map from a sphere $S^N$ to itself is the number of times 
+the map goes around the target sphere, up to homotopy.
+It is clearer to see this on an example:
+
 \end{document}

@@ -12,4 +12,12 @@ build/
 dist/
 *.egg-info/
 
+.gz
+.xml
+.toc
+.out
+.log
+.bcf
+.aux
+
 results/

@@ -3,4 +3,6 @@
 \contentsline {section}{\tocsection {}{2}{Trees}}{1}{section.2}%
 \contentsline {subsection}{\tocsubsection {}{2.1}{Trees with simple junctions}}{2}{subsection.2.1}%
 \contentsline {subsection}{\tocsubsection {}{2.2}{Trees with double junctions}}{2}{subsection.2.2}%
-\contentsline {subsection}{\tocsubsection {}{2.3}{New degree definition}}{3}{subsection.2.3}%
+\contentsline {subsection}{\tocsubsection {}{2.3}{New degree definition}}{4}{subsection.2.3}%
+\contentsline {section}{\tocsection {}{3}{Defining the detector map}}{4}{section.3}%
+\contentsline {section}{\tocsection {}{4}{Degree of a map between spheres}}{4}{section.4}%
