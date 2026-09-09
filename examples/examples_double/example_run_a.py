@@ -202,8 +202,8 @@ f_b = make_tree_detector_map(family, "b")
 # First, we need to pick a good regular value.
 # We do this for the a-detector first.
 
-outs0 = sample_outputs(0.0, samples=61, f_a)
-outs1 = sample_outputs(1.0, samples=61, f_a)
+outs0 = sample_outputs(0.0,f_a,  samples=61)
+outs1 = sample_outputs(1.0, f_a, samples=61)
 
 y0_bottom = pick_deep_interior_point(outs0)
 y0_top    = pick_deep_interior_point(outs1)
