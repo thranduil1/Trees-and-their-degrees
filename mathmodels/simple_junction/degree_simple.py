@@ -11,7 +11,7 @@ regular-value / oriented-Jacobian estimate. There is more info on how this works
 import numpy as np
 import matplotlib.pyplot as plt
 
-from dimension_one.detector_one import make_slice_detector_map
+from simple_junction.detector_simple import make_slice_detector_map
 
 ##  Distance from q in [0,1]^d to its boundary.
 
