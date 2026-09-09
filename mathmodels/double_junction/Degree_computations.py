@@ -6,6 +6,7 @@
 # (This is explained in some more detail in the mathcontext folder).
 
 import numpy as np
+from double_junction.make_detector_map import make_tree_detector_map
 
 # The first thing we do is restrict the detector to the only two face maps that we care about.
 def _face_map_from_tree_detector(

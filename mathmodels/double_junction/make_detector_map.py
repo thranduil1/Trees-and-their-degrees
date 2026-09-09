@@ -2,8 +2,8 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from Tree_building import tree_at
-from Detector_maps import detect_a, detect_b
+from double_junction.Tree_building import tree_at
+from double_junction.Detector_maps import detect_a, detect_b
 
 """
     Construct the composite map
@@ -34,7 +34,9 @@ def make_tree_detector_map(
         )
 
     if detector_kwargs is None:
-        detector_kwargs = {}
+        detector_kwargs = {
+            "detector_radius": 0.25,
+        }
 
     N = family["N"]
 

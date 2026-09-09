@@ -1,6 +1,6 @@
 import numpy as np
 
-def sample_outputs(time_value, f, samples=61):
+def sample_outputs(family, time_value, f, samples=61):
     N = family["N"]
     outputs = []
     for index in np.ndindex(*(samples for _ in range(N))):
