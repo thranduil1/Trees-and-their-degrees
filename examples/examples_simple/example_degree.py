@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from dimension_one.making_tree import make_family_one
-from dimension_one.detector_one import detector_boundary_degree
+from simple_junction.making_tree_simple import make_family_one
+from simple_junction.detector_simple import detector_boundary_degree
 
 family = make_family_one(
     N=3,

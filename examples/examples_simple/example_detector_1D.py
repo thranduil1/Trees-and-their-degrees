@@ -1,8 +1,8 @@
-from dimension_one.making_tree import (
+from simple_junction.making_tree_simple import (
     make_family_one
 )
 
-from dimension_one.detector_one import make_slice_detector_map
+from simple_junction.detector_simple import make_slice_detector_map
 
 from detector_1D_plot import (
     detector_heatmap_N3,

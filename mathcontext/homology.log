@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  8 SEP 2026 22:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  8 SEP 2026 23:17
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1040,18 +1040,18 @@ Package logreq Info: Writing requests to 'homology.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 51993 strings out of 474273
- 1248014 string characters out of 5747714
- 2125152 words of memory out of 5000000
- 73332 multiletter control sequences out of 15000+600000
- 565602 words of font info for 57 fonts, out of 8000000 for 9000
+ 52026 strings out of 474273
+ 1248367 string characters out of 5747714
+ 2126152 words of memory out of 5000000
+ 73355 multiletter control sequences out of 15000+600000
+ 571055 words of font info for 80 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  84i,5n,97p,1639b,1836s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on homology.pdf (1 page, 66242 bytes).
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
+Output written on homology.pdf (1 page, 83288 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 69 PDF objects out of 1000 (max. 8388607)
+ 49 compressed objects within 1 object stream
  5 named destinations out of 1000 (max. 500000)
  29 words of extra memory for PDF output out of 10000 (max. 10000000)
 

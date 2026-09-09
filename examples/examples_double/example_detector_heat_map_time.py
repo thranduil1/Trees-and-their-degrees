@@ -5,8 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from detector_heat_map_TIME import plot_detector_time_face
-from Tree_building import make_tree_family
-from Detector_maps import detect_a, detect_b
+from double_junction.Tree_building import make_tree_family
+from double_junction.Detector_maps import detect_a, detect_b
 
 family = make_tree_family(a=3,b=2,N=3,)
 

@@ -3,9 +3,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from higher_dim.Tree_building import tree_at, make_tree_family
-from higher_dim.Detector_maps import detect_a, detect_b
-from higher_dim.Quotient import quotient_cube_to_sphere
+from double_junction.Tree_building import tree_at, make_tree_family
+from double_junction.Detector_maps import detect_a, detect_b
+from double_junction.Quotient import quotient_cube_to_sphere
 
 # What we are actually plotting is the distance from a quotient-cube point to the basepoint. 
 # We use the quotient_cube_to_sphere representation: C^N / boundary(C^N) ~= S^N.

@@ -3,8 +3,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from higher_dim.Tree_building import *
-from higher_dim.Detector_maps import detect_a, detect_b
+from double_junction.Tree_building import *
+from double_junction.Detector_maps import detect_a, detect_b
 """
     Plot detector distance to the quotient basepoint on t=0 or t=1.
 

@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 (needed for 3D projection)
 
-from dimension_one.making_tree import make_family_one, tree_at_one
+from simple_junction.making_tree_simple import make_family_one, tree_at_one
 
 def plot_tree_3d(
     tree,
