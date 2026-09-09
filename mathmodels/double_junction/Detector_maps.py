@@ -5,8 +5,10 @@ import numpy as np
 
 # L-infinity geometry: we want to determine the closest junction to the center for the L-infinity distance.
 
-# L-infinity distance map
 def linf_distance(p, q):
+    """
+    L-infinity distance between two points.
+    """
     p = np.asarray(p, dtype=float)
     q = np.asarray(q, dtype=float)
 
@@ -15,12 +17,19 @@ def linf_distance(p, q):
 
     return float(np.max(np.abs(p - q)))
 
-# L-infinity distance from a point to a closed affine segment.
-# This is not very hard to do because the segment is affine 
-# so the distance is realized either at s = 0, s = 1, or where two affine pieces meet.
-  
+
 def linf_distance_point_to_segment(point, start, end):
-  
+    """
+    Exact L-infinity distance from a point to a closed affine segment.
+
+    Computes:
+
+        min_{0 <= s <= 1}
+        || point - ((1-s) * start + s * end) ||_infinity.
+
+    The objective is convex and piecewise linear in s. Its minimum
+    occurs either at s = 0, s = 1, or where two affine pieces meet.
+    """
     point = np.asarray(point, dtype=float)
     start = np.asarray(start, dtype=float)
     end = np.asarray(end, dtype=float)
@@ -78,15 +87,19 @@ def linf_distance_point_to_segment(point, start, end):
 
 # Geometry forbidden to a selected junction
 
-# The detector cube is centered inside the N-dimensional unit cube.
-
+# The detector cube is centered inside the unit cube.
 def detector_center(N):
     return np.full(N, 0.5)
 
-# Largest radius r for which the centered L-infinity cube {z : ||z - center||_infinity <= r} remains inside [0, 1]^N.
 
 def cube_radius_to_boundary(center):
+    """
+    Largest radius r for which the centered L-infinity cube
 
+        {z : ||z - center||_infinity <= r}
+
+    remains inside [0, 1]^N.
+    """
     center = np.asarray(center, dtype=float)
 
     return float(
@@ -95,7 +108,6 @@ def cube_radius_to_boundary(center):
         )
     )
 
-# For the a-detector (resp. b-detector), the detector cube can only contain an a-junction resp. b-junction). 
 
 def forbidden_distance(
     tree,
@@ -129,17 +141,21 @@ def forbidden_distance(
     return min(distances)
 
 # Detector data
-# Now we find the unique isolatable junction of the right type. 
-#  Returns None for the quotient basepoint, or diagnostic data for exactly one admissible junction.
 
 def detector_data(
     tree,
     target_type,
+    detector_radius=0.25,
     *,
     center=None,
     tie_tolerance=1e-12,
 ):
+    """
+    Find the unique isolatable junction of target_type.
 
+    Returns None for the quotient basepoint, or diagnostic data
+    for exactly one admissible junction.
+    """
     if target_type not in {"a", "b"}:
         raise ValueError(
             "target_type must be 'a' or 'b'."
@@ -190,23 +206,41 @@ def detector_data(
             center,
         )
 
-        outer_radius = min(
-            ambient_radius,
-            forbidden_radius,
-        )
+        # The detector is allowed to use only a central L-infinity cube
+        # of radius detector_radius around `center`.
+        if detector_radius <= 0.0:
+            raise ValueError(
+                "detector_radius must be positive."
+            )
 
-        # Strict inequality is essential. If the candidate and a
-        # competing object are equally close, this fails. 
+        if detector_radius > ambient_radius:
+            raise ValueError(
+        "detector_radius must not exceed the radius "
+        "available inside the ambient cube."
+                )
+
+# The outer radius is constrained both by forbidden geometry and
+# by the prescribed maximum detector size.
+        outer_radius = min(
+                ambient_radius,
+                forbidden_radius,
+                detector_radius,
+                )
+
+# A valid detector cube must contain the candidate strictly in
+# its interior and exclude every forbidden object.
         if not (
-            distance_to_center
-            < outer_radius - tie_tolerance
-        ):
+                distance_to_center
+                < outer_radius - tie_tolerance
+                ):
             continue
 
+        # Choose a cube strictly between the candidate and the nearest
+        # obstruction / permitted detector boundary.
         cube_radius = 0.5 * (
-            distance_to_center
-            + outer_radius
-        )
+                            distance_to_center
+                            + outer_radius
+                            )
 
         normalized_position = (
             0.5
@@ -247,20 +281,18 @@ def detector_data(
     return candidates[0]
 
 
-# ============================================================
-# Quotient-valued detector maps.
-# Now that we have selected a junction (or None), we will return the position of the junction inside the detector cube.
-# (But renormalized inside the unit cube.)
-# If there is no junction, we are sent to a basepoint.
-# This defines a map into C^N quotiented out by its boundary.
-# None            = basepoint
-# NumPy array y   = interior point of C^N
-# ============================================================
-
-# Detect a uniquely isolatable a-junction and returns either its position or None.
+# Now we make the actual maps that detect either an a-junction or a b-junction.
+# These maps have values in the quotient of a cube by its boundary.
+# These values are either None (the basepoint) or an array which represents an interior point of C^N.
 
 def detect_a(tree, **kwargs):
+    """
+    Detect a uniquely isolatable a-junction.
 
+    Returns:
+        None for the quotient basepoint, or
+        y in (0, 1)^N for the detected normalized position.
+    """
     data = detector_data(
         tree,
         target_type="a",
@@ -272,10 +304,15 @@ def detect_a(tree, **kwargs):
 
     return data["normalized_position"]
 
-# Same for b.
 
 def detect_b(tree, **kwargs):
+    """
+    Detect a uniquely isolatable b-junction.
 
+    Returns:
+        None for the quotient basepoint, or
+        y in (0, 1)^N for the detected normalized position.
+    """
     data = detector_data(
         tree,
         target_type="b",
