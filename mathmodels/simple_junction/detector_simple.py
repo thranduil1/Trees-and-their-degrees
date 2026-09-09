@@ -1,5 +1,5 @@
 import numpy as np
-from dimension_one.making_tree import make_family_one, tree_at_one
+from simple_junction.making_tree_simple import make_family_one, tree_at_one
 
 def edge_slice_intersection(
     start,
