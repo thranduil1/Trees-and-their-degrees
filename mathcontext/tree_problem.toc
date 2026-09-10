@@ -1,8 +1,11 @@
 \babel@toc {english}{}\relax 
 \contentsline {section}{\tocsection {}{1}{Introduction}}{1}{section.1}%
-\contentsline {section}{\tocsection {}{2}{Trees}}{1}{section.2}%
+\contentsline {section}{\tocsection {}{2}{Trees}}{2}{section.2}%
 \contentsline {subsection}{\tocsubsection {}{2.1}{Trees with simple junctions}}{2}{subsection.2.1}%
 \contentsline {subsection}{\tocsubsection {}{2.2}{Trees with double junctions}}{2}{subsection.2.2}%
-\contentsline {subsection}{\tocsubsection {}{2.3}{New degree definition}}{4}{subsection.2.3}%
-\contentsline {section}{\tocsection {}{3}{Defining the detector map}}{4}{section.3}%
-\contentsline {section}{\tocsection {}{4}{Degree of a map between spheres}}{4}{section.4}%
+\contentsline {subsection}{\tocsubsection {}{2.3}{Goal -- notion of degree}}{3}{subsection.2.3}%
+\contentsline {section}{\tocsection {}{3}{Defining the detector map}}{5}{section.3}%
+\contentsline {section}{\tocsection {}{4}{Degree of a map between spheres}}{5}{section.4}%
+\contentsline {subsection}{\tocsubsection {}{4.1}{Degree formula}}{5}{subsection.4.1}%
+\contentsline {subsection}{\tocsubsection {}{4.2}{Algorithm}}{7}{subsection.4.2}%
+\contentsline {subsection}{\tocsubsection {}{4.3}{Picking a regular value}}{7}{subsection.4.3}%

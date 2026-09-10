@@ -25,7 +25,7 @@
 
 \usepackage{colonequals}
 
-%--- Trucs retirés par Werner ----%
+%--- Trucs retirés ----%
 
 % \usepackage{latexsym}
 % \usepackage{changepage}
@@ -37,6 +37,8 @@
 \definecolor{forestgreen}{rgb}{0.27, 0.60, 0.46} 
 
 %----- FIGURES -----%
+
+\usepackage{mdframed}
 
 \usepackage{graphicx}
 
@@ -247,7 +249,7 @@ The following document explains this problem and the framework we came up with t
 For extra context on the Thompson groups and their homology, please consult the other file in this folder.
 Reading the following document is however completely necessary to understanding the specific question we were working on as well as its implementation.
 
-\section{Trees}
+\section{Trees}\label{treeprob}
 
 We will consider finite rooted trees, and we call an \textbf{$a$-junction} a vertex of the tree with one parent and $a$ children: 
 For instance, \Bseries{[[[][][]]]} is a 3-junction.
@@ -297,30 +299,38 @@ We add an $ab$-junction which represents this path:
    [[, edge = purple,label = {[label distance=0.05cm]180:$\rightarrow$}[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]]}
   \end{center}
 The idea is that if our tree lives in dimension $N$, we are adding an extra dimension which represents time.
-The position of $t$ in $[0,1]$ indicates what the form of the tree is in a continuous way as depicted in figure \ref{time}.
+The position of $t$ in $[0,1]$ indicates what the form of the tree is in a continuous way as depicted in figure \ref{timeline}.
 Now our tree is parametrized by an element in $[0,1]^{N+1}$.
-
-In the program, there is a function $make_family$ which holds the combinatorial information about the tree,
-and a function $tree_at$ which to a point in $[0,1]^{N+1}$ and the combinatorial information of the tree
+\begin{figure}
+  \def\svgwidth{0.8\hsize}
+  \input{timeline.pdf_tex}
+  \caption{The tree is parametrized by $(x,t)\in[0,1]^N\times [0,1]$. 
+  The barycenter of the junctions is governed by $x$ and the shape of the tree (including how far apart the junctions are) is governed by $t$.}
+  \label{timeline}  
+\end{figure}
+  
+\begin{mdframed}[backgroundcolor=purple!10]
+In the program, there is a function \texttt{make\char`_family} which holds the combinatorial information about the tree,
+and a function \texttt{tree\char`_at} which to a point in $[0,1]^{N+1}$ and the combinatorial information of the tree
 associates the corresponding embedding of a tree inside a unit cube $[0,1]^N$.
+\end{mdframed}
 
+\subsection{Goal -- notion of degree}
 We would like to determine the degree of this extra junction. 
 It is tempting to say that the degree of this junction is $ab-1$.
 However, this does not really work, in part because our definition of degree is not precise enough.
-
-Let's assume we have an $ab$-junction of this form:
-
+Let's assume we have an $ab$-junction. 
 In a neighborhood of this $ab$-junction however, we have two very different pictures.
 So if we move just a little bit away from the $ab$-junction, we can end up in two very different scenarios which have different degrees.
+
 \begin{figure}
 \def\svgwidth{0.5\hsize}
 \input{neighb.pdf_tex}
-\label{neighborhood}
 \caption{Two trees very close to each other but with very different "local images". 
-The trees are drawn in the direction they are oriented.}
+The trees are oriented from leaves to root.}
+\label{neighborhood}
 \end{figure}
 
-\subsection{New degree definition}
 Let's give another definition of the degree by going back to the case of a simple junction.
 If we imagine a smaller lens traveling around the junction and recording what it sees, we will see a single path $a+1$ times:
 $a$ time with positive orientation and once with negative orientation, and so we recover a degree of $a-1$.
@@ -345,8 +355,8 @@ $a$ time with positive orientation and once with negative orientation, and so we
 \end{scope}
   \end{tikzpicture}
 \end{center}
-\label{simplej}
 \caption{The case of a simple junction}
+\label{simplej}
 \end{figure}
 
 We will find the degree of the $ab$-junction by traveling around it and recording what we see.
@@ -359,17 +369,85 @@ the point is that it's hard}
 This is the basis of the heuristic we will follow to define the detector map.
 
 \section{Defining the detector map}
-We create a detector $a$-junctions, and one for $b$-junctions,
-in the same way with the following procedure.
+We create a detector for $a$-junctions, and one for $b$-junctions,
+according to the following procedure.
 Given a specific embedding of a tree,
-we look at a smaller detector cube centered inside the unit cube and we record what it contains.
+we look at a smaller detector cube centered inside the unit cube and we record what it contains:
+\begin{itemize}
+\item if it contains a single $a$-junction and no other connected component of the tree, 
+we record the position of the $a$-junction, which is a point inside the detector cube,
+and rescale it to a point of the unit cube.
+\item if it contains anything else, we record "nothing", which we set as the basepoint.
+\end{itemize}
+Therefore, the range of the detector map is a unit cube $[0,1]^N$, whose boundary has been collapsed to a point,
+which we call the basepoint. 
 
+\begin{mdframed}[backgroundcolor=purple!10]
+  \centering 
+  The detector map that we define in the program is actually a composition of \texttt{tree\char`_at} and the aforementioned procedure:\\
+\begin{itemize}
+\item Take a point in the cube $[0,1]^{N+1}$ that we can write $(x,t)$ where $x\in[0,1]^N, t\in[0,1]$;
+\item Construct an embedding of a tree inside the cube $[0,1]^N$. The barycenter of the junctions is at $x$ and the shape of the tree is determined by $t$;
+\item Look inside a smaller detector cube and record what you see;
+\item Get a point in $([0,1]^N)/(\partial [0,1]^N)$.
+\end{itemize}
+This is what the functions \texttt{detect\char`_a} and \texttt{detect\char`_b} correspond to.
+\end{mdframed}
 
 \section{Degree of a map between spheres}
-The notion of degree we defined in the file tree-problem is closely related 
+The notion of degree we defined in section \ref{treeprob} is closely related 
 to the notion of degree of maps between spheres.
 Basically, the degree of a map from a sphere $S^N$ to itself is the number of times 
 the map goes around the target sphere, up to homotopy.
-It is clearer to see this on an example:
+It is clearer to see this on an example.
+\begin{exemple}
+  Imagine the function from the circle $S^1$ to another $S^1$ which wraps the circle around itself twice,
+  as illustrated in figure \ref{degre2}:
+  \begin{figure}
+    \def\svgwidth{0.4\hsize}
+    \input{degre2.pdf_tex}
+    \caption{The orange circle wraps twice around the first one, starting and ending at the purple point.}
+    \label{degre2}
+  \end{figure}
+  The degree of this map is $2$.
+\end{exemple}
+Examples on spheres of higher dimension are more difficult to understand than in dimension 1, but they work in the same way.
+
+\subsection{Degree formula}
+If the map is $C^1$, we can obtain the degree by picking a regular point $y$ in the image (i.e. a point with nonsingular differential),
+and counting its preimages:
+\[d = \displaystyle \sum_{p\in f^{—1}(y)} s_p\] 
+where $s_p$ is the sign of the Jacobian of $f$ at point $p$.
+\begin{exemple}
+  Consider the two maps from $S^1$ to $S^1$ depicted in figure \ref{queldegre}:
+  \begin{figure}
+    \def\svgwidth{0.7\hsize}
+    \input{queldegre.pdf_tex}
+    \caption{The left map is the one introduced earlier.
+    The map on the right wraps the orange circle around the black circle once, then changes directions and wraps around it once more.}
+    \label{queldegre} 
+  \end{figure}
+    If one were simply to count the preimages at any regular value -- for instance, not at the basepoint of the circle (the purple point),
+    one would see that for both maps, there are two points of the orange circle mapped to the same point of the black circle.
+    However, the degree of the left map is 2, and the degree of the right map is 0.
+    This is because in the first instance, both preimages contribute the same sign to the formula: they are oriented in the same way.
+    In the second instance, they have opposite orientation.
+\end{exemple}
+
+Recall the detector map that goes from $[0,1]^{N+1}$ to $[0,1]^N/\partial [0,1]^N$.
+If we restrict to the boundary of $[0,1]^{N+1}$, we get a map from something which is equivalent to an $N$-sphere 
+to another space which is equivalent to an $N$-sphere.
+This is why the notion of degree of maps between spheres applies in this case.
+
+\subsection{Algorithm}
+Let us now go through the idea of the algorithm.
+Given a regular value $y$, the algorithm looks for the preimages of $y$ in the source.
+To do this, it cuts up the source into many small little cubes and looks for the preimage inside each cube.
+Of course, searching for the preimage inside every cube would take too much time, so many of them are discarded.
+
+
+\subsection{Picking a regular value}
+It is very important to pick a good regular value to carry out the above procedure.
+
 
 \end{document}
