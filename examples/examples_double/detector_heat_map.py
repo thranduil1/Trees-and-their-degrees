@@ -70,7 +70,7 @@ def plot_detector_slice(
     fixed_value=0.0,
     varying_axis=1,
     other_x_value=0.5,
-    resolution=120,
+    resolution=100,
     title=None,
 ):
 
