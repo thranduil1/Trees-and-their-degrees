@@ -280,7 +280,6 @@ def detector_data(
 
     return candidates[0]
 
-
 # Now we make the actual maps that detect either an a-junction or a b-junction.
 # These maps have values in the quotient of a cube by its boundary.
 # These values are either None (the basepoint) or an array which represents an interior point of C^N.

@@ -72,6 +72,7 @@ def plot_detector_slice(
     other_x_value=0.5,
     resolution=100,
     title=None,
+    ax = None,
 ):
 
     N = family["N"]
@@ -140,7 +141,10 @@ def plot_detector_slice(
 
             active[row, column] = q is not None
 
-    fig, ax = plt.subplots(figsize=(8, 6))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(8, 6))
+    else:
+        fig = ax.figure
 
     image = ax.imshow(
         distances,
@@ -153,7 +157,6 @@ def plot_detector_slice(
         interpolation="nearest",
     )
 
-    # White curve: detector changes between basepoint and active.
     if np.any(active) and not np.all(active):
         ax.contour(
             x_values,
@@ -164,19 +167,10 @@ def plot_detector_slice(
             linewidths=0.8,
         )
 
-    colorbar = fig.colorbar(
-        image,
-        ax=ax,
-    )
+    colorbar = fig.colorbar(image, ax=ax)
+    colorbar.set_label("Spherical distance to quotient basepoint")
 
-    colorbar.set_label(
-        "Spherical distance to quotient basepoint"
-    )
-
-    ax.set_xlabel(
-        f"parameter x[{varying_axis}]"
-    )
-
+    ax.set_xlabel(f"parameter x[{varying_axis}]")
     ax.set_ylabel("tree-shape parameter t")
 
     if title is None:

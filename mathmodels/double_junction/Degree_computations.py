@@ -8,55 +8,10 @@
 import numpy as np
 from double_junction.make_detector_map import make_tree_detector_map
 
-# The first thing we do is restrict the detector to the only two face maps that we care about.
-def _face_map_from_tree_detector(
-    tree_detector_map,
-    N,
-    time_value,
-    x,
-    tie_tolerance=1e-12,
-):
-    """Evaluate the detector on a fixed time face.
+import numpy as np
 
-    Parameters
-    ----------
-    tree_detector_map : callable
-        f(p) where p = (x, t) in [0,1]^{N+1}.
-    N : int
-        Transverse dimension (codomain cube dimension).
-    time_value : {0.0, 1.0}
-        Which time face to evaluate.
-    x : ndarray
-        Point in [0,1]^N (the spatial coordinates).
-    tie_tolerance : float
-        Passed through to the detector if needed.
-
-    Returns
-    -------
-    q : ndarray or None
-        Point in (0,1)^N or None (basepoint).
-    """
-    p = np.empty(N + 1, dtype=float)
-    p[:N] = x
-    p[N] = time_value
-
-    q = tree_detector_map(p)
-
-    if q is None:
-        return None
-
-    q = np.asarray(q, dtype=float)
-
-    # Treat points extremely close to the boundary as basepoint.
-    if np.any(q <= tie_tolerance) or np.any(q >= 1.0 - tie_tolerance):
-        return None
-
-    return q
-
-# We will need to compute the Jacobian
-
-def _jacobian_on_face(face_map, x, h, N):
-    """Central-difference Jacobian on the time face.
+def _jacobian_central_diff(g, x, h, N):
+    """Central-difference Jacobian of g at x.
 
     Returns None if any stencil point hits the basepoint.
     """
@@ -68,8 +23,8 @@ def _jacobian_on_face(face_map, x, h, N):
         xp[j] += h
         xm[j] -= h
 
-        fp = face_map(xp)
-        fm = face_map(xm)
+        fp = g(xp)
+        fm = g(xm)
 
         if fp is None or fm is None:
             return None
@@ -78,35 +33,51 @@ def _jacobian_on_face(face_map, x, h, N):
 
     return jac
 
-# Computes the degree of the map on each time face.
-
-def degree_on_time_face(
-    tree_detector_map,
+def degree_on_cube_map(
+    g,
     *,
     N,
-    time_value,
     regular_value=None,
     samples=61,
     tie_tolerance=1e-12,
     root_tol=None,
 ):
-    """Estimate the relative degree on the face t = time_value.
+    """Estimate the relative degree of a map g:[0,1]^N -> [0,1]^N.
 
-    This uses a grid search for cells whose images surround
-    ``regular_value``, then refines preimages with Newton iterations.
+    The map g is allowed to return None to indicate the basepoint
+    (i.e. points on the quotient boundary). Those are excluded from
+    the degree computation.
 
-    Returns a dict with:
-        - "time_face": time_value
-        - "relative_degree": integer
-        - "preimages": array of x-positions in [0,1]^N
-        - "jacobian_determinants", "local_degrees"
-        - "regular_value"
-        - "samples"
+    Parameters
+    ----------
+    g : callable
+        Function x -> q or None, where x,q are in [0,1]^N.
+    N : int
+        Dimension of the domain and codomain cube.
+    regular_value : ndarray or None
+        Target regular value in (0,1)^N. Defaults to center.
+    samples : int
+        Number of grid points in each direction.
+    tie_tolerance : float
+        If g(x) has any coordinate <= tie_tolerance or
+        >= 1 - tie_tolerance, it is treated as basepoint (None).
+    root_tol : float or None
+        Tolerance for accepting a refined preimage.
+
+    Returns
+    -------
+    result : dict
+        {
+            "relative_degree": int,
+            "preimages": ndarray of shape (k, N),
+            "jacobian_determinants": ndarray,
+            "local_degrees": ndarray of int,
+            "regular_value": ndarray,
+            "samples": int,
+        }
     """
-    if N < 3:
-        raise ValueError("N must be at least 3.")
-    if time_value not in (0.0, 1.0):
-        raise ValueError("time_value must be 0.0 or 1.0.")
+    if N < 1:
+        raise ValueError("N must be at least 1.")
     if samples < 3:
         raise ValueError("samples must be at least 3.")
 
@@ -115,27 +86,23 @@ def degree_on_time_face(
     regular_value = np.asarray(regular_value, dtype=float)
 
     if regular_value.shape != (N,):
-        raise ValueError(
-            f"regular_value must have shape ({N},)."
-        )
+        raise ValueError(f"regular_value must have shape ({N},).")
     if np.any(regular_value <= 0.0) or np.any(regular_value >= 1.0):
-        raise ValueError(
-            "regular_value must lie in the open cube."
-        )
+        raise ValueError("regular_value must lie in the open cube.")
 
     h_grid = 1.0 / (samples - 1)
     h_diff = min(0.25 * h_grid, 1e-4)
     if root_tol is None:
         root_tol = 0.05 * h_grid
 
-    def face_map(x):
-        return _face_map_from_tree_detector(
-            tree_detector_map,
-            N,
-            time_value,
-            x,
-            tie_tolerance=tie_tolerance,
-        )
+    def safe_g(x):
+        q = g(x)
+        if q is None:
+            return None
+        q = np.asarray(q, dtype=float)
+        if np.any(q <= tie_tolerance) or np.any(q >= 1.0 - tie_tolerance):
+            return None
+        return q
 
     grid = np.linspace(0.0, 1.0, samples)
     cache = {}
@@ -143,7 +110,7 @@ def degree_on_time_face(
     def cached(x):
         key = tuple(np.round(x, 14))
         if key not in cache:
-            cache[key] = face_map(x)
+            cache[key] = safe_g(x)
         return cache[key]
 
     roots = []
@@ -167,7 +134,7 @@ def degree_on_time_face(
 
         corner_values = np.asarray(corners)
 
-        # Quick bounding-box test: does the image cell contain regular_value?
+        # Quick bounding-box test.
         if np.any(regular_value < corner_values.min(axis=0)):
             continue
         if np.any(regular_value > corner_values.max(axis=0)):
@@ -177,8 +144,8 @@ def degree_on_time_face(
         x = lo + 0.5 * h_grid
 
         for _ in range(20):
-            q = face_map(x)
-            jac = _jacobian_on_face(face_map, x, h_diff, N)
+            q = safe_g(x)
+            jac = _jacobian_central_diff(safe_g, x, h_diff, N)
             if q is None or jac is None:
                 break
             try:
@@ -197,14 +164,14 @@ def degree_on_time_face(
 
             x = x_next
 
-        q = face_map(x)
-        jac = _jacobian_on_face(face_map, x, h_diff, N)
+        q = safe_g(x)
+        jac = _jacobian_central_diff(safe_g, x, h_diff, N)
         if q is None or jac is None:
             continue
         if np.linalg.norm(q - regular_value) > root_tol:
             continue
 
-        # Avoid duplicate roots from neighboring candidate cells.
+        # Avoid duplicate roots from neighboring cells.
         if any(np.linalg.norm(x - old) < 0.25 * h_grid for old in roots):
             continue
         roots.append(x)
@@ -213,7 +180,7 @@ def degree_on_time_face(
     determinants = []
 
     for x in roots:
-        jac = _jacobian_on_face(face_map, x, h_diff, N)
+        jac = _jacobian_central_diff(safe_g, x, h_diff, N)
         determinant = float(np.linalg.det(jac))
         determinants.append(determinant)
         signs.append(
@@ -223,7 +190,6 @@ def degree_on_time_face(
         )
 
     return {
-        "time_face": time_value,
         "relative_degree": int(sum(signs)),
         "preimages": np.asarray(roots),
         "jacobian_determinants": np.asarray(determinants),
@@ -232,12 +198,57 @@ def degree_on_time_face(
         "samples": samples,
     }
 
-# The total degree is obtained by degree(t=1)-degree(t=0).
-# We are using different regular values to compute the degree on each face.
-# Usually, using different regular values on the two faces does NOT
-# directly give a topological degree. This is only valid if you
-# can justify that both regular values lie in the same connected
-# component of regular values and the map is proper, but here this is the case !
+def degree_on_time_face(
+    tree_detector_map,
+    *,
+    N,
+    time_value,
+    regular_value=None,
+    samples=61,
+    tie_tolerance=1e-12,
+    root_tol=None,
+):
+    """Estimate the relative degree on the face t = time_value.
+
+    Parameters
+    ----------
+    tree_detector_map : callable
+        f(p) where p = (x, t) in [0,1]^{N+1}.
+    N : int
+        Transverse dimension (codomain cube dimension).
+    time_value : {0.0, 1.0}
+        Which time face to evaluate.
+    regular_value, samples, tie_tolerance, root_tol:
+        Passed to degree_on_cube_map.
+
+    Returns
+    -------
+    result : dict
+        Same structure as degree_on_cube_map, plus "time_face".
+    """
+    if time_value not in (0.0, 1.0):
+        raise ValueError("time_value must be 0.0 or 1.0.")
+
+    def face_map(x):
+        p = np.empty(N + 1, dtype=float)
+        p[:N] = x
+        p[N] = time_value
+        q = tree_detector_map(p)
+        return q  # None is allowed; degree_on_cube_map will wrap it
+
+    result = degree_on_cube_map(
+        face_map,
+        N=N,
+        regular_value=regular_value,
+        samples=samples,
+        tie_tolerance=tie_tolerance,
+        root_tol=root_tol,
+    )
+
+    return {
+        "time_face": time_value,
+        **result,
+    }
 
 def tree_detector_boundary_degree(
     family,
@@ -249,51 +260,26 @@ def tree_detector_boundary_degree(
     tie_tolerance=1e-12,
     detector_kwargs=None,
 ):
-    """Estimate the degree with separate regular values for t=0 and t=1.
-
-    This is useful when the detector outputs on the two faces are
-    concentrated in different regions of the cube.
-
-    Parameters
-    ----------
-    family : dict
-        From make_tree_family.
-    detector_type : {"a", "b"}
-        Which detector to use.
-    regular_value_bottom : ndarray or None
-        Regular value for t=0 face. Defaults to center.
-    regular_value_top : ndarray or None
-        Regular value for t=1 face. Defaults to center.
-    samples : int
-        Grid resolution per face.
-    tie_tolerance : float
-        Tolerance for treating points as basepoint.
-    detector_kwargs : dict or None
-        Extra kwargs for detector_data.
-
-    Returns
-    -------
-    result : dict
-        Same structure as tree_detector_boundary_degree.
-    """
-    
+    """Estimate the degree with separate regular values for t=0 and t=1."""
 
     if detector_type not in {"a", "b"}:
-        raise ValueError(
-            "detector_type must be 'a' or 'b'."
-        )
+        raise ValueError("detector_type must be 'a' or 'b'.")
 
     N = int(family["N"])
-
     if N < 3:
         raise ValueError("N must be at least 3.")
+
+    if detector_kwargs is None:
+        detector_kwargs = {
+            "detector_radius": 0.25,
+        }
+
+    from double_junction.make_detector_map import make_tree_detector_map
 
     tree_detector_map = make_tree_detector_map(
         family,
         detector_type,
-       detector_kwargs={
-        "detector_radius": 0.25,
-    },
+        detector_kwargs=detector_kwargs,
     )
 
     bottom = degree_on_time_face(
@@ -324,4 +310,3 @@ def tree_detector_boundary_degree(
         "regular_value_bottom": bottom["regular_value"],
         "regular_value_top": top["regular_value"],
     }
-

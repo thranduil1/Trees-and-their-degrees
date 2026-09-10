@@ -74,122 +74,94 @@ plt.close()
 # On the boundary of C^{N+1}, we have either that x is on the boundary of C^N or t=0 or t=1.
 # Right now we are looking at values on the boundary of C^N.
 
-# fig, ax, distances, active = plot_detector_slice(
-#     family,
-#     target_type="a",
-#     fixed_axis=0,
-#     fixed_value=0.0,
-#     varying_axis=1,
-#     other_x_value=0.5,
-#     resolution=150,
-#     title="a-detector: x[0]=0, vary x[1] and t",
-# )
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-# plt.show()
+_, _, distances0, active0 = plot_detector_slice(
+    family,
+    target_type="a",
+    fixed_axis=0,
+    fixed_value=0.0,
+    varying_axis=1,
+    other_x_value=0.5,
+    resolution=100,
+    title="a-detector: x[0]=0, vary x[1] and t",
+    ax=axes[0],
+)
 
-# fig, ax, distances, active = plot_detector_slice(
-#     family,
-#     target_type="a",
-#     fixed_axis=0,
-#     fixed_value=1.0,
-#     varying_axis=1,
-#     other_x_value=0.5,
-#     resolution=150,
-#     title="a-detector: x[0]=1, vary x[1] and t",
-# )
-
-# plt.show()
-
-# plt.savefig(
-#     "results/boundary_x.png",
-#     dpi=200,
-#     bbox_inches="tight",
-# )
-
-# plt.close()
-
+_, _, distances1, active1 = plot_detector_slice(
+    family,
+    target_type="a",
+    fixed_axis=0,
+    fixed_value=1.0,
+    varying_axis=1,
+    other_x_value=0.5,
+    resolution=100,
+    title="a-detector: x[0]=1, vary x[1] and t",
+    ax=axes[1],
+)
+fig.tight_layout()
+plt.savefig("results/boundary_x.png", dpi=200, bbox_inches="tight")
+plt.show()
 
 # # We are now plotting out the detector on 2D slices for t=0 and t=1.
 
-# plot_detector_time_face(
-#     family,
-#     target_type="a",
-#     t_value=0.0,
-#     varying_axes=(0, 1),
-#     fixed_x_value=0.5,
-#     resolution=150,
-#     title="a-detector on the t=0 face",
-# )
+# a-detector
+fig_a, axes_a = plt.subplots(1, 2, figsize=(14, 6))
 
-# plt.show()
+_, _, distances_a0, active_a0 = plot_detector_time_face(
+    family,
+    target_type="a",
+    t_value=0.0,
+    varying_axes=(0, 1),
+    fixed_x_value=0.5,
+    resolution=130,
+    title="a-detector on the t=0 face",
+    ax=axes_a[0],
+)
 
-# plt.savefig(
-#     "results/a_t0.png",
-#     dpi=200,
-#     bbox_inches="tight",
-# )
+_, _, distances_a1, active_a1 = plot_detector_time_face(
+    family,
+    target_type="a",
+    t_value=1.0,
+    varying_axes=(0, 1),
+    fixed_x_value=0.2,
+    resolution=130,
+    title="a-detector on the t=1 face",
+    ax=axes_a[1],
+)
 
-# plt.close()
+fig_a.tight_layout()
+fig_a.savefig("results/a_t0_t1.png", dpi=200, bbox_inches="tight")
+plt.show()
 
-# plot_detector_time_face(
-#     family,
-#     target_type="a",
-#     t_value=1.0,
-#     varying_axes=(0, 1),
-#     fixed_x_value=0.2,
-#     resolution=150,
-#     title="a-detector on the t=1 face",
-# )
+# b-detector
+fig_b, axes_b = plt.subplots(1, 2, figsize=(14, 6))
 
-# plt.show()
+_, _, distances_b0, active_b0 = plot_detector_time_face(
+    family,
+    target_type="b",
+    t_value=0.0,
+    varying_axes=(0, 1),
+    fixed_x_value=0.6,
+    resolution=130,
+    title="b-detector on the t=0 face",
+    ax=axes_b[0],
+)
 
-# plt.savefig(
-#     "results/a_t1.png",
-#     dpi=200,
-#     bbox_inches="tight",
-# )
+_, _, distances_b1, active_b1 = plot_detector_time_face(
+    family,
+    target_type="b",
+    t_value=1.0,
+    varying_axes=(0, 1),
+    fixed_x_value=0.6,
+    resolution=130,
+    title="b-detector on the t=1 face",
+    ax=axes_b[1],
+)
 
-# plt.close()
-
-# plot_detector_time_face(
-#     family,
-#     target_type="b",
-#     t_value=0.0,
-#     varying_axes=(0, 1),
-#     fixed_x_value=0.5,
-#     resolution=150,
-#     title="b-detector on the t=0 face",
-# )
-
-# plt.show()
-
-# plt.savefig(
-#     "results/b_t0.png",
-#     dpi=200,
-#     bbox_inches="tight",
-# )
-
-# plt.close()
-
-# plot_detector_time_face(
-#     family,
-#     target_type="b",
-#     t_value=1.0,
-#     varying_axes=(0, 1),
-#     fixed_x_value=0.35,
-#     resolution=150,
-#     title="b-detector on the t=1 face",
-# )
-
-# plt.show()
-
-# plt.savefig(
-#     "results/b_t1.png",
-#     dpi=200,
-#     bbox_inches="tight",
-# )
-
-# plt.close()
+fig_b.tight_layout()
+fig_b.savefig("results/b_t0_t1.png", dpi=200, bbox_inches="tight")
+plt.show()
 
 # The important thing that we notice here is that the only faces which will contribute to the degree are t=0 and t=1, so 2 out of 2N+2.
 # This is always true in our case, so we will use this simplification to compute the degree.

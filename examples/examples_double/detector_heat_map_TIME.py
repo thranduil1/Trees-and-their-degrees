@@ -39,8 +39,6 @@ from double_junction.Detector_maps import detect_a, detect_b
     fig, ax, distances, active
 """
 
-family = make_tree_family(a=3,b=2,N=3,)
-
 def plot_detector_time_face(
     family,
     target_type,
@@ -51,6 +49,7 @@ def plot_detector_time_face(
     resolution=150,
     detector_kwargs=None,
     title=None,
+    ax = None,
 ):
 
     N = family["N"]
@@ -153,17 +152,15 @@ def plot_detector_time_face(
 
                 active[row, column] = True
 
-    fig, ax = plt.subplots(figsize=(8, 7))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(8, 7))
+    else:
+        fig = ax.figure
 
     image = ax.imshow(
         distances,
         origin="lower",
-        extent=[
-            0.0,
-            1.0,
-            0.0,
-            1.0,
-        ],
+        extent=[0.0, 1.0, 0.0, 1.0],
         aspect="equal",
         cmap="magma",
         interpolation="nearest",
@@ -179,22 +176,11 @@ def plot_detector_time_face(
             linewidths=0.9,
         )
 
-    colorbar = fig.colorbar(
-        image,
-        ax=ax,
-    )
+    colorbar = fig.colorbar(image, ax=ax)
+    colorbar.set_label("Distance to quotient basepoint")
 
-    colorbar.set_label(
-        "Distance to quotient basepoint"
-    )
-
-    ax.set_xlabel(
-        f"$x_{horizontal_axis}$"
-    )
-
-    ax.set_ylabel(
-        f"$x_{vertical_axis}$"
-    )
+    ax.set_xlabel(f"$x_{horizontal_axis}$")
+    ax.set_ylabel(f"$x_{vertical_axis}$")
 
     if title is None:
         title = (
