@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  10 SEP 2026 18:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.6)  11 SEP 2026 14:55
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1137,43 +1137,26 @@ Package hyperref Info: Link coloring ON on input line 234.
 
  [1{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
 
-Package forest Warning: Baseline node (id=2) was not drawn (most likely it's a phantom node) on input line 295.
+Package forest Warning: Baseline node (id=2) was not drawn (most likely it's a phantom node) on input line 292.
 
 
-Package forest Warning: Baseline node (id=2) was not drawn (most likely it's a phantom node) on input line 299.
+Package forest Warning: Baseline node (id=2) was not drawn (most likely it's a phantom node) on input line 296.
 
 (./timeline.pdf_tex
-<timeline.pdf, id=70, page=1, 521.61212pt x 145.06615pt>
+<timeline.pdf, id=45, page=1, 521.61212pt x 145.06615pt>
 File: timeline.pdf Graphic file (type pdf)
 <use timeline.pdf, page 1>
 Package pdftex.def Info: timeline.pdf , page1 used on input line 56.
 (pdftex.def)             Requested size: 341.43436pt x 94.95813pt.
 )
-
-Package fancyhdr Warning: \headheight is too small (8.0pt): 
-(fancyhdr)                Make it at least 14.0pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.0pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
-
-[2]
-Package mdframed Info: mdframed works in twoside mode on input line 312.
+Package mdframed Info: mdframed works in twoside mode on input line 310.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 312.
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 313.
+(mdframed)              on input line 310.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 311.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) (./neighb.pdf_tex
-<neighb.pdf, id=78, page=1, 149.23174pt x 255.26639pt>
-File: neighb.pdf Graphic file (type pdf)
-<use neighb.pdf, page 1>
-Package pdftex.def Info: neighb.pdf , page1 used on input line 56.
-(pdftex.def)             Requested size: 213.39566pt x 365.05151pt.
 )
-Underfull \vbox (badness 1565) has occurred while \output is active []
-
-
 
 Package fancyhdr Warning: \headheight is too small (8.0pt): 
 (fancyhdr)                Make it at least 14.0pt, for example:
@@ -1181,31 +1164,79 @@ Package fancyhdr Warning: \headheight is too small (8.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
 
-[3 <./timeline.pdf>]
+[2 <./timeline.pdf>]
 
-Package fancyhdr Warning: \headheight is too small (8.0pt): 
-(fancyhdr)                Make it at least 14.0pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.0pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
+LaTeX Warning: Reference `simple' on page 3 undefined on input line 322.
 
-[4 <./neighb.pdf>]
-Package mdframed Info: mdframed works in twoside mode on input line 385.
+Package mdframed Info: mdframed works in twoside mode on input line 369.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 385.
- (./degre2.pdf_tex
-<degre2.pdf, id=99, page=1, 177.10516pt x 183.61295pt>
+(mdframed)              on input line 369.
+
+Package fancyhdr Warning: \headheight is too small (8.0pt): 
+(fancyhdr)                Make it at least 14.0pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.0pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
+
+[3]
+Package mdframed Info: Not enough space on this page on input line 379.
+
+
+LaTeX Warning: Reference `mdf@pagelabel-3' on page 4 undefined on input line 379.
+
+
+LaTeX Warning: Reference `sphere' on page 4 undefined on input line 385.
+
+(./spheresandcubes.pdf_tex
+<spheresandcubes.pdf, id=63, page=1, 384.71265pt x 282.20041pt>
+File: spheresandcubes.pdf Graphic file (type pdf)
+<use spheresandcubes.pdf, page 1>
+Package pdftex.def Info: spheresandcubes.pdf , page1 used on input line 56.
+(pdftex.def)             Requested size: 170.71393pt x 125.22353pt.
+<spheresandcubes.pdf, id=64, page=2, 384.71265pt x 282.20041pt>
+File: spheresandcubes.pdf Graphic file (type pdf)
+<use spheresandcubes.pdf, page 2>
+Package pdftex.def Info: spheresandcubes.pdf , page2 used on input line 58.
+(pdftex.def)             Requested size: 170.71393pt x 125.22353pt.
+<spheresandcubes.pdf, id=65, page=3, 384.71265pt x 282.20041pt>
+File: spheresandcubes.pdf Graphic file (type pdf)
+<use spheresandcubes.pdf, page 3>
+Package pdftex.def Info: spheresandcubes.pdf , page3 used on input line 60.
+(pdftex.def)             Requested size: 170.71393pt x 125.22353pt.
+)
+
+LaTeX Warning: Reference `degre2' on page 4 undefined on input line 402.
+
+(./degre2.pdf_tex
+<degre2.pdf, id=67, page=1, 177.10516pt x 183.61295pt>
 File: degre2.pdf Graphic file (type pdf)
 <use degre2.pdf, page 1>
 Package pdftex.def Info: degre2.pdf , page1 used on input line 56.
 (pdftex.def)             Requested size: 170.71393pt x 176.99765pt.
 )
 
-LaTeX Warning: Command \textemdash invalid in math mode on input line 419.
+Package fancyhdr Warning: \headheight is too small (8.0pt): 
+(fancyhdr)                Make it at least 14.0pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.0pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
+
+[4 <./spheresandcubes.pdf> <./spheresandcubes.pdf
+
+pdfTeX warning: pdflatex (file ./spheresandcubes.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./spheresandcubes.pdf
+
+pdfTeX warning: pdflatex (file ./spheresandcubes.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>]
+
+LaTeX Warning: Command \textemdash invalid in math mode on input line 416.
+
+
+LaTeX Warning: Reference `queldegre' on page 5 undefined on input line 419.
 
 (./queldegre.pdf_tex
-<queldegre.pdf, id=101, page=1, 453.60577pt x 209.01898pt>
+<queldegre.pdf, id=78, page=1, 453.60577pt x 209.01898pt>
 File: queldegre.pdf Graphic file (type pdf)
 <use queldegre.pdf, page 1>
 Package pdftex.def Info: queldegre.pdf , page1 used on input line 56.
@@ -1218,15 +1249,7 @@ Package fancyhdr Warning: \headheight is too small (8.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
 
-[5]
-
-Package fancyhdr Warning: \headheight is too small (8.0pt): 
-(fancyhdr)                Make it at least 14.0pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.0pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
-
-[6 <./degre2.pdf> <./queldegre.pdf
+[5 <./degre2.pdf> <./queldegre.pdf
 
 pdfTeX warning: pdflatex (file ./queldegre.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >]
@@ -1237,30 +1260,43 @@ Package fancyhdr Warning: \headheight is too small (8.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-6.0pt}.
 
-[7] (./tree_problem.aux)
+[6] (./tree_problem.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
-Package rerunfilecheck Info: File `tree_problem.out' has not changed.
-(rerunfilecheck)             Checksum: 3AB3D6EE1AFD58D1115842E3DF5D7871;1804.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `tree_problem.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `tree_problem.out':
+(rerunfilecheck)             Before: F2C04DD9E778DD8899EB654CC1E68149;1169
+(rerunfilecheck)             After:  EBBA416A7426C8801135C5B4AC7C01DC;1898.
 Package logreq Info: Writing requests to 'tree_problem.run.xml'.
 \openout1 = `tree_problem.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 56146 strings out of 474273
- 1323851 string characters out of 5747714
- 2187223 words of memory out of 5000000
- 77413 multiletter control sequences out of 15000+600000
+ 56149 strings out of 474273
+ 1324142 string characters out of 5747714
+ 2185756 words of memory out of 5000000
+ 77417 multiletter control sequences out of 15000+600000
  572052 words of font info for 82 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 126i,16n,133p,1643b,2751s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 126i,20n,133p,1643b,2751s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on tree_problem.pdf (7 pages, 225048 bytes).
+Output written on tree_problem.pdf (6 pages, 224232 bytes).
 PDF statistics:
- 203 PDF objects out of 1000 (max. 8388607)
- 156 compressed objects within 2 object streams
- 26 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 175 PDF objects out of 1000 (max. 8388607)
+ 127 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 

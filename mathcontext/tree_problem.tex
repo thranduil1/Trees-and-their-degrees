@@ -239,30 +239,27 @@
 \section{Introduction}
 
 In the course of our study of the family of Higman--Thompson groups, 
-there came to be a question that was very easy to answer in small dimensions
+there arose a question that was easy to answer in small dimensions
 and much harder in higher dimensions.
-The fundamental reason for this was that it was easy to come up with a reasonable visualization in low dimensions,
+The fundamental reason for this is that it was easy to come up with a reasonable visualization in low dimensions,
 and much harder in higher dimensions because of the limitations of 3-dimensional space.
 Therefore, we tried to come up with a good visualization in higher dimensions.
 
 The following document explains this problem and the framework we came up with to answer it in higher dimensions.
-For extra context on the Thompson groups and their homology, please consult the other file in this folder.
-Reading the following document is however completely necessary to understanding the specific question we were working on as well as its implementation.
+Reading the following document is recommended to understand the specific question we were working on as well as its implementation.
 
-\section{Trees}\label{treeprob}
+\section{A question about trees}\label{treeprob}
 
 We will consider finite rooted trees, and we call an \textbf{$a$-junction} a vertex of the tree with one parent and $a$ children: 
-For instance, \Bseries{[[[][][]]]} is a 3-junction.
+For instance, \Cseries{[[[][][]]]} is a 3-junction.
 
 \subsection{Trees with simple junctions}
 Let us start by considering the following problem.
 Consider a finite rooted tree which only has $a$-junctions, for $a$ an integer.
 We will think of trees as being oriented from the leaves to the root.
-Consider the following picture:
+The following is an illustration of an (oriented) junction:
 \begin{center}
   \begin{tikzpicture}
-    \draw (0,0) circle (2cm);
-
 \begin{scope}[very thick,decoration={
   markings,
   mark=at position 0.5 with {\arrow{>}}}
@@ -274,11 +271,10 @@ Consider the following picture:
 \end{scope}
   \end{tikzpicture}
 \end{center}
-We will call the \textbf{degree} of a junction the number of incoming edges minus the number of outgoing edges in a small circle around the junction.
+We will call \textbf{degree} of a junction the number of incoming edges minus the number of outgoing edges at the junction.
 For any $a$-junction, this number is clearly $a-1$.
-
-Now let us assume we have trees with $a$-junctions and $b$-junctions. 
-The $a$-junctions have degree $a-1$, and the $b$-junctions have degree $b-1$.
+If the trees have two or more types of junctions, for instance $a$-junctions and $b$-junctions,
+the $a$-junctions have degree $a-1$, and the $b$-junctions have degree $b-1$.
 
 \subsection{Trees with double junctions}
 
@@ -287,6 +283,7 @@ with the following additional \textbf{interchange relation}:
 \begin{center}
   \Bseries{[[, edge = orange,[, edge = purple][, edge = purple]][, edge = orange,[, edge = purple][, edge = purple]][,edge = orange,[, edge = purple][, edge = purple]]]} = \Bseries{[[, edge = purple,[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]}.
 \end{center} 
+This means that we identify certain trees even if they do not have the same shape.
 How can we represent this equality topologically?
 In topology, we can always relax an equality between two objects by creating a path between them.
 We add an $ab$-junction which represents this path:
@@ -298,7 +295,8 @@ We add an $ab$-junction which represents this path:
    \Bseries{[,phantom,s sep = 5pt, [[, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen][, edge = forestgreen]]
    [[, edge = purple,label = {[label distance=0.05cm]180:$\rightarrow$}[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]]}
   \end{center}
-The idea is that if our tree lives in dimension $N$, we are adding an extra dimension which represents time.
+
+If our tree lives in $N$-dimensional space, we are adding an extra dimension which represents time.
 The position of $t$ in $[0,1]$ indicates what the form of the tree is in a continuous way as depicted in figure \ref{timeline}.
 Now our tree is parametrized by an element in $[0,1]^{N+1}$.
 \begin{figure}
@@ -318,22 +316,13 @@ associates the corresponding embedding of a tree inside a unit cube $[0,1]^N$.
 \subsection{Goal -- notion of degree}
 We would like to determine the degree of this extra junction. 
 It is tempting to say that the degree of this junction is $ab-1$.
-However, this does not really work, in part because our definition of degree is not precise enough.
-Let's assume we have an $ab$-junction. 
-In a neighborhood of this $ab$-junction however, we have two very different pictures.
-So if we move just a little bit away from the $ab$-junction, we can end up in two very different scenarios which have different degrees.
-
-\begin{figure}
-\def\svgwidth{0.5\hsize}
-\input{neighb.pdf_tex}
-\caption{Two trees very close to each other but with very different "local images". 
-The trees are oriented from leaves to root.}
-\label{neighborhood}
-\end{figure}
+However, we now have equivalent trees that do not have the same structure, so how can one determine the degree in this case?
 
 Let's give another definition of the degree by going back to the case of a simple junction.
-If we imagine a smaller lens traveling around the junction and recording what it sees, we will see a single path $a+1$ times:
-$a$ time with positive orientation and once with negative orientation, and so we recover a degree of $a-1$.
+We represent the junction living inside a small neighborhood, depicted as a circle around it in figure \ref{simple}.
+Then imagine a smaller lens traveling around the boundary of the small neighborhood and recording what it sees.
+The lens will see a single path $a+1$ times:
+$a$ time with positive orientation and once with negative orientation, and so we recover a total degree of $a-1$.
 \begin{figure}
 \begin{center}
   \begin{tikzpicture}
@@ -360,18 +349,13 @@ $a$ time with positive orientation and once with negative orientation, and so we
 \end{figure}
 
 We will find the degree of the $ab$-junction by traveling around it and recording what we see.
-Because the $ab$-junction lives in "higher dimension", we need to count the number of $a$-junctions and $b$-junctions that we see around it, not just paths.
-
-\textcolor{purple}{Explain this better.
-Also I should try to make a picture for the bigger junctions but I'm just not sure how,
-the point is that it's hard}
-
-This is the basis of the heuristic we will follow to define the detector map.
+We need to count the number of $a$-junctions and $b$-junctions that we see around it.
+This is how we will construct the detector map.
 
 \section{Defining the detector map}
 We create a detector for $a$-junctions, and one for $b$-junctions,
 according to the following procedure.
-Given a specific embedding of a tree,
+Given a specific embedding of a tree inside a cube,
 we look at a smaller detector cube centered inside the unit cube and we record what it contains:
 \begin{itemize}
 \item if it contains a single $a$-junction and no other connected component of the tree, 
@@ -395,6 +379,19 @@ This is what the functions \texttt{detect\char`_a} and \texttt{detect\char`_b} c
 \end{mdframed}
 
 \section{Degree of a map between spheres}
+The detector map is defined from $[0,1]^{N+1}$ to $[0,1]^N/\partial [0,1]^N$.
+If we restrict the source to the boundary of $[0,1]^{N+1}$, then the source is equivalent to an $N$-sphere.
+The range $[0,1]^N/\partial [0,1]^N$ is a cube whose boundary is collapsed to a point, 
+which is also equivalent to an $N$-sphere, as illustrated in figure \ref{sphere}.
+\begin{figure}
+  \def\svgwidth{0.4\hsize}
+  \input{spheresandcubes.pdf_tex}
+  \caption{The boundary of the 3-dimensional cube and a 2-square whose boundary is glued onto a point 
+  are both models for the 2-sphere.}
+  \label{sphere}
+\end{figure}
+Therefore, the detector map is equivalent to a function from a sphere $S^N$ to itself.
+
 The notion of degree we defined in section \ref{treeprob} is closely related 
 to the notion of degree of maps between spheres.
 Basically, the degree of a map from a sphere $S^N$ to itself is the number of times 
@@ -434,17 +431,11 @@ where $s_p$ is the sign of the Jacobian of $f$ at point $p$.
     In the second instance, they have opposite orientation.
 \end{exemple}
 
-Recall the detector map that goes from $[0,1]^{N+1}$ to $[0,1]^N/\partial [0,1]^N$.
-If we restrict to the boundary of $[0,1]^{N+1}$, we get a map from something which is equivalent to an $N$-sphere 
-to another space which is equivalent to an $N$-sphere.
-This is why the notion of degree of maps between spheres applies in this case.
-
 \subsection{Algorithm}
-Let us now go through the idea of the algorithm.
-Given a regular value $y$, the algorithm looks for the preimages of $y$ in the source.
-To do this, it cuts up the source into many small little cubes and looks for the preimage inside each cube.
-Of course, searching for the preimage inside every cube would take too much time, so many of them are discarded.
-
+Let us now go through the steps of the algorithm:
+\begin{itemize}
+\item 
+\end{itemize}
 
 \subsection{Picking a regular value}
 It is very important to pick a good regular value to carry out the above procedure.

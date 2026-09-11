@@ -19,4 +19,4 @@ Basic ideas
 
 There is more information about this in mathcontext/tree_problem, however here is a quick breakdown of what is done. The goal is to compute the degree of a map between spheres. This is done in the third part of the project using methods from simplicial homology.
 
-The first two parts of the project are dedicated to building the actual map whose degree we want to compute.  
+The first two parts of the project are dedicated to building the actual map whose degree we want to compute. 

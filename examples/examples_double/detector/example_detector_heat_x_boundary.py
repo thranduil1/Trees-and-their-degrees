@@ -5,7 +5,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from double_junction.Tree_building import make_tree_family
+from double_junction.trees.Tree_building import make_tree_family
 from detector_heat_map import plot_detector_slice
 
 

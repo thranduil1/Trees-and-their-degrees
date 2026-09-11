@@ -6,9 +6,6 @@
 # (This is explained in some more detail in the mathcontext folder).
 
 import numpy as np
-from double_junction.make_detector_map import make_tree_detector_map
-
-import numpy as np
 
 def _jacobian_central_diff(g, x, h, N):
     """Central-difference Jacobian of g at x.
@@ -274,7 +271,7 @@ def tree_detector_boundary_degree(
             "detector_radius": 0.25,
         }
 
-    from double_junction.make_detector_map import make_tree_detector_map
+    from double_junction.detector.make_detector_map import make_tree_detector_map
 
     tree_detector_map = make_tree_detector_map(
         family,

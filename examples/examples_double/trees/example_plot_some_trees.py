@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tree_plots import plot_tree_3d
-from double_junction.Tree_building import tree_at, make_tree_family
+from double_junction.trees.Tree_building import tree_at, make_tree_family
 
 family = make_tree_family(
     a=3,

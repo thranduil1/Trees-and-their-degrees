@@ -4,7 +4,7 @@ from simple_junction.making_tree_simple import (
 
 from simple_junction.detector_simple import make_slice_detector_map
 
-from detector_1D_plot import (
+from examples.examples_simple.detector.detector_1D_plot import (
     detector_heatmap_N3,
 )
 

@@ -7,14 +7,14 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 
-from tree_plots import plot_tree_3d
-from double_junction.Tree_building import tree_at, make_tree_family
-from detector_heat_map import plot_detector_slice
-from detector_heat_map_TIME import plot_detector_time_face
-from double_junction.Detector_maps import detect_a, detect_b
-from double_junction.make_detector_map import make_tree_detector_map
-from double_junction.Degree_computations import tree_detector_boundary_degree
-from double_junction.regular_values import sample_outputs, pick_deep_interior_point
+from trees.tree_plots import plot_tree_3d
+from double_junction.trees.Tree_building import tree_at, make_tree_family
+from detector.detector_heat_map import plot_detector_slice
+from detector.detector_heat_map_TIME import plot_detector_time_face
+from double_junction.detector.Detector_maps import detect_a, detect_b
+from double_junction.detector.make_detector_map import make_tree_detector_map
+from double_junction.degree.Degree_computations import tree_detector_boundary_degree
+from double_junction.degree.regular_values import sample_outputs, pick_deep_interior_point
 
 family = make_tree_family(
     a=3,
@@ -196,5 +196,6 @@ result = tree_detector_boundary_degree(
 print("Relative degree t=0:", result["bottom_face"]["relative_degree"])
 print("Relative degree t=1:", result["top_face"]["relative_degree"])
 print("Total degree:", result["degree"])
+print("b-1:", b-1)
 print("Preimages t=0:", len(result["bottom_face"]["preimages"]))
 print("Preimages t=1:", len(result["top_face"]["preimages"]))
