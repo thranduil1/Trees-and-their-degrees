@@ -5,7 +5,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 from double_junction.trees.Tree_building import *
 from double_junction.detector.Detector_maps import detect_a, detect_b
-"""
+
+
+def plot_detector_time_face(
+    family,
+    target_type,
+    *,
+    t_value,
+    varying_axes=(0, 1),
+    fixed_x_value=0.5,
+    resolution=150,
+    detector_kwargs=None,
+    title=None,
+    ax = None,
+):
+    """
     Plot detector distance to the quotient basepoint on t=0 or t=1.
 
     For N=3, two coordinates of x are varied and the remaining
@@ -37,20 +51,7 @@ from double_junction.detector.Detector_maps import detect_a, detect_b
     Returns
     -------
     fig, ax, distances, active
-"""
-
-def plot_detector_time_face(
-    family,
-    target_type,
-    *,
-    t_value,
-    varying_axes=(0, 1),
-    fixed_x_value=0.5,
-    resolution=150,
-    detector_kwargs=None,
-    title=None,
-    ax = None,
-):
+    """
 
     N = family["N"]
 

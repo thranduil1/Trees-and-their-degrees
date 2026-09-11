@@ -19,7 +19,7 @@ _, _, distances_a0, active_a0 = plot_detector_time_face(
     t_value=0.0,
     varying_axes=(0, 1),
     fixed_x_value=0.5,
-    resolution=130,
+    resolution=100,
     title="a-detector on the t=0 face",
     ax=axes_a[0],
 )
@@ -30,7 +30,7 @@ _, _, distances_a1, active_a1 = plot_detector_time_face(
     t_value=1.0,
     varying_axes=(0, 1),
     fixed_x_value=0.2,
-    resolution=130,
+    resolution=100,
     title="a-detector on the t=1 face",
     ax=axes_a[1],
 )
@@ -67,3 +67,6 @@ _, _, distances_b1, active_b1 = plot_detector_time_face(
 fig_b.tight_layout()
 fig_b.savefig("results/b_t0_t1.png", dpi=200, bbox_inches="tight")
 plt.show()
+
+# One thing that's nice to do is plot the b-detector for many slices
+

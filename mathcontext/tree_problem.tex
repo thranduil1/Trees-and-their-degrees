@@ -440,5 +440,25 @@ Let us now go through the steps of the algorithm:
 \subsection{Picking a regular value}
 It is very important to pick a good regular value to carry out the above procedure.
 
+\section{Limitations}
+
+\subsection{Limitations of the degree computation}
+The most time-consuming process is definitely the degree computation, as its complexity is in $O(s^N\times N)$
+where $s$ is the number of points in the grid.
+When $N\geq 5$, only extremely simple computations work.
+Some possible fixes include doing fewer Newton iterations or computing the Jacobian in a coarser way,
+but the best idea would probably be to create a grid which is not uniform.
+We could start with a coarse grid, and mark the cells which are likely to contain a preimage of our value,
+only subdivide those cells with a finer grid, and repeat the process until we get a few candidate cells.
+
+We could also use more sophisticated programs to find roots, such as.
+
+\subsection{Other problems}
+We also note that the model for trees is not that readily adaptable to trees with triple junctions,
+i.e. the case of trees with $a$-junctions, $b$-junctions, and $c$-junctions,
+which are allowed to collide and switch pairwise.
+
+
+
 
 \end{document}
