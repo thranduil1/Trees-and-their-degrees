@@ -433,9 +433,20 @@ where $s_p$ is the sign of the Jacobian of $f$ at point $p$.
 
 \subsection{Algorithm}
 Let us now go through the steps of the algorithm:
-\begin{itemize}
-\item 
-\end{itemize}
+\begin{enumerate}
+\item Pick a regular value $y$ (more on this in the next section).
+\item Discretize the domain $[0,1]^N$ with a regular grid.
+\item Scan each cell to identify those which are likely to contain a preimage of $y$.
+\item Perform a Newton iteration on the retained cells to get an approximate preimage of $y$
+\item Compute the Jacobian at the preimage and get the sign of its determinant.
+\item Add up the signs of all found preimages.
+\end{enumerate}
+
+Because Newton's method is a bit expensive, we want to have a good test to determine if a cell is likely to contain a preimage of $y$.
+We perform a bounding box test: for the cell $C$ with set of corners $V$, 
+we consider the box $\displaystyle \prod[\min_{x\in V}f(x)_i,\max_{x\in V}f(x)_i].$
+If $y$ is not in this box, we discard the cell as unlikely to contain a preimage of $y$.
+This works when the detector map is reasonable.
 
 \subsection{Picking a regular value}
 It is very important to pick a good regular value to carry out the above procedure.

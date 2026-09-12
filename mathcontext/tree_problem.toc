@@ -11,4 +11,4 @@
 \contentsline {subsection}{\tocsubsection {}{4.3}{Picking a regular value}}{6}{subsection.4.3}%
 \contentsline {section}{\tocsection {}{5}{Limitations}}{6}{section.5}%
 \contentsline {subsection}{\tocsubsection {}{5.1}{Limitations of the degree computation}}{6}{subsection.5.1}%
-\contentsline {subsection}{\tocsubsection {}{5.2}{Other problems}}{6}{subsection.5.2}%
+\contentsline {subsection}{\tocsubsection {}{5.2}{Other problems}}{7}{subsection.5.2}%

@@ -9,7 +9,6 @@ from double_junction.Detector_maps import detect_a, detect_b
 
 family = make_tree_family(a=3, b=2, N=3)
 
-
 # a-detector
 fig_a, axes_a = plt.subplots(1, 2, figsize=(14, 6))
 
