@@ -145,7 +145,7 @@ def forbidden_distance(
 def detector_data(
     tree,
     target_type,
-    detector_radius=0.25,
+    detector_radius=0.05,
     *,
     center=None,
     tie_tolerance=1e-12,

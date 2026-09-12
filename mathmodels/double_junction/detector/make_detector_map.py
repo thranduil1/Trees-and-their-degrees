@@ -2,7 +2,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from mathmodels.double_junction.trees.Tree_building import tree_at
+from double_junction.trees.Tree_building import tree_at
 from double_junction.detector.Detector_maps import detect_a, detect_b
 
 def make_tree_detector_map(
@@ -34,7 +34,7 @@ def make_tree_detector_map(
 
     if detector_kwargs is None:
         detector_kwargs = {
-            "detector_radius": 0.25,
+            "detector_radius": 0.05,
         }
 
     N = family["N"]

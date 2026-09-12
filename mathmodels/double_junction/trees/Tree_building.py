@@ -25,7 +25,23 @@ def equally_spaced_interior(count, margin):
     )
 
 # Make a tree family depending on some parameters:
-"""
+
+
+def make_tree_family(
+    a,
+    b,
+    *,
+    N=3,
+    barycenter_margin=0.1,
+    barycenter_box_margin=0.3,
+    junction_span_a=0.2,
+    junction_span_b=0.2,
+    junction_time_gap=0.2,
+    leaf_margin=0.10,
+    leaf_time=0.05,
+    root_time=0.95,
+):
+    """
     a, b:
         The leaves form an a-by-b rectangular array.
 
@@ -50,20 +66,6 @@ def equally_spaced_interior(count, margin):
     leaf_time, root_time:
         Fixed time coordinates of leaves and root.
     """
-
-def make_tree_family(
-    a,
-    b,
-    *,
-    N=3,
-    barycenter_margin=0.1,
-    junction_span_a=0.20,
-    junction_span_b=0.20,
-    junction_time_gap=0.1,
-    leaf_margin=0.10,
-    leaf_time=0.05,
-    root_time=0.95,
-):
     
     if a < 1 or b < 1:
         raise ValueError("a and b must be positive.")
@@ -74,6 +76,14 @@ def make_tree_family(
     if not 0.0 < barycenter_margin < 0.5:
         raise ValueError(
             "barycenter_margin must lie in (0, 1/2)."
+        )
+    
+    if barycenter_box_margin is None:
+        barycenter_box_margin = barycenter_margin
+
+    if not 0.0 <= barycenter_box_margin < 0.5:
+        raise ValueError(
+            "barycenter_box_margin must lie in [0, 1/2)."
         )
 
     if not 0.0 <= leaf_margin < 0.5:
@@ -170,6 +180,9 @@ def make_tree_family(
         "b": int(b),
         "N": int(N),
         "barycenter_margin": float(barycenter_margin),
+        "barycenter_box_margin": float(
+            barycenter_box_margin
+        ),
         "junction_span_a": float(junction_span_a),
         "junction_span_b": float(junction_span_b),
         "junction_time_gap": float(junction_time_gap),
@@ -186,7 +199,10 @@ def make_tree_family(
 
 def physical_barycenter(family, x):
     N = family["N"]
-    margin = family["barycenter_margin"]
+    margin = family.get(
+        "barycenter_box_margin",
+        family["barycenter_margin"],
+    )
 
     x = np.asarray(x, dtype=float)
 

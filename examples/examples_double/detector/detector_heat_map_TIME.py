@@ -15,7 +15,7 @@ def plot_detector_time_face(
     varying_axes=(0, 1),
     fixed_x_value=0.5,
     resolution=150,
-    detector_kwargs=None,
+    detector_kwargs={"detector_radius" : 0.05,},
     title=None,
     ax = None,
 ):

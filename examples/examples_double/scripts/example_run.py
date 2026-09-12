@@ -7,10 +7,10 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 
-from trees.tree_plots import plot_tree_3d
+from examples_double.trees.tree_plots import plot_tree_3d
 from double_junction.trees.Tree_building import tree_at, make_tree_family
-from detector.detector_heat_map import plot_detector_slice
-from detector.detector_heat_map_TIME import plot_detector_time_face
+from examples_double.detector.detector_heat_map import plot_detector_slice
+from examples_double.detector.detector_heat_map_TIME import plot_detector_time_face
 from double_junction.detector.Detector_maps import detect_a, detect_b
 from double_junction.detector.make_detector_map import make_tree_detector_map
 from double_junction.degree.Degree_computations import tree_detector_boundary_degree
@@ -21,6 +21,8 @@ family = make_tree_family(
     b=2,
     N=3,
 )
+a=3
+b=2
 
 x = np.array([0.8, 0.8, 0.8])
 
@@ -197,5 +199,33 @@ print("Relative degree t=0:", result["bottom_face"]["relative_degree"])
 print("Relative degree t=1:", result["top_face"]["relative_degree"])
 print("Total degree:", result["degree"])
 print("b-1:", b-1)
+print("Preimages t=0:", len(result["bottom_face"]["preimages"]))
+print("Preimages t=1:", len(result["top_face"]["preimages"]))
+
+# Now let's do this for the b-detector
+
+outs0 = sample_outputs(family, 0.0,f_b,  samples=61)
+outs1 = sample_outputs(family, 1.0, f_b, samples=61)
+
+y0_bottom = pick_deep_interior_point(outs0)
+y0_top    = pick_deep_interior_point(outs1)
+
+print("Regular value for t=0:", y0_bottom)
+print("Regular value for t=1:", y0_top)
+
+# 
+
+result = tree_detector_boundary_degree(
+    family,
+    detector_type="b",
+    regular_value_bottom=y0_bottom,
+    regular_value_top=y0_top,
+    samples=61,
+)
+
+print("Relative degree t=0:", result["bottom_face"]["relative_degree"])
+print("Relative degree t=1:", result["top_face"]["relative_degree"])
+print("Total degree:", result["degree"])
+print("a-1:", a-1)
 print("Preimages t=0:", len(result["bottom_face"]["preimages"]))
 print("Preimages t=1:", len(result["top_face"]["preimages"]))

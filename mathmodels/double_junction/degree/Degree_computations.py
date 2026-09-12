@@ -268,7 +268,7 @@ def tree_detector_boundary_degree(
 
     if detector_kwargs is None:
         detector_kwargs = {
-            "detector_radius": 0.25,
+            "detector_radius": 0.05,
         }
 
     from double_junction.detector.make_detector_map import make_tree_detector_map

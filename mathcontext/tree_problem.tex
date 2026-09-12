@@ -238,7 +238,7 @@
 
 \section{Introduction}
 
-In the course of our study of the family of Higman--Thompson groups, 
+In the course of my study of the family of Higman--Thompson groups, 
 there arose a question that was easy to answer in small dimensions
 and much harder in higher dimensions.
 The fundamental reason for this is that it was easy to come up with a reasonable visualization in low dimensions,
@@ -250,11 +250,14 @@ Reading the following document is recommended to understand the specific questio
 
 \section{A question about trees}\label{treeprob}
 
+Topological spaces are easier to understand when broken up into building blocks, which are simple spaces, and maps between them.
+Let us say we have a space of trees. 
+We break it up by understanding all the individual junctions, and how the junctions attach to each other.
 We will consider finite rooted trees, and we call an \textbf{$a$-junction} a vertex of the tree with one parent and $a$ children: 
 For instance, \Cseries{[[[][][]]]} is a 3-junction.
+Let us first consider the case of trees with simple junctions.
 
 \subsection{Trees with simple junctions}
-Let us start by considering the following problem.
 Consider a finite rooted tree which only has $a$-junctions, for $a$ an integer.
 We will think of trees as being oriented from the leaves to the root.
 The following is an illustration of an (oriented) junction:
@@ -443,13 +446,16 @@ Let us now go through the steps of the algorithm:
 \end{enumerate}
 
 Because Newton's method is a bit expensive, we want to have a good test to determine if a cell is likely to contain a preimage of $y$.
-We perform a bounding box test: for the cell $C$ with set of corners $V$, 
+We perform a bounding box testin step 3: for the cell $C$ with set of corners $V$, 
 we consider the box $\displaystyle \prod[\min_{x\in V}f(x)_i,\max_{x\in V}f(x)_i].$
 If $y$ is not in this box, we discard the cell as unlikely to contain a preimage of $y$.
 This works when the detector map is reasonable.
 
-\subsection{Picking a regular value}
+\textbf{Picking a regular value for step 1:}
 It is very important to pick a good regular value to carry out the above procedure.
+For maps with a clear analytic formula, this is easy to determine.
+For the detector map, this is not so clear. What we do is look at the outputs of the detector map,
+and pick a regular value that lives inside a cluster of other regular values, to make sure it is in a very regular zone.
 
 \section{Limitations}
 
@@ -468,8 +474,5 @@ We could also use more sophisticated programs to find roots, such as.
 We also note that the model for trees is not that readily adaptable to trees with triple junctions,
 i.e. the case of trees with $a$-junctions, $b$-junctions, and $c$-junctions,
 which are allowed to collide and switch pairwise.
-
-
-
 
 \end{document}
