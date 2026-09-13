@@ -2,9 +2,9 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from double_junction.trees.Tree_building import make_tree_family, tree_at
+from double_junction.trees.tree_building import make_tree_family, tree_at
 from trees.tree_plots import plot_tree_3d
-from double_junction.detector.Detector_maps import detect_a, detect_b
+from double_junction.detector.detector_maps import detect_a, detect_b
 
 family = make_tree_family(
     a=3,

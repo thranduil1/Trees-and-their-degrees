@@ -2,8 +2,8 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from double_junction.trees.Tree_building import tree_at
-from double_junction.detector.Detector_maps import detect_a, detect_b
+from double_junction.trees.tree_building import tree_at
+from double_junction.detector.detector_maps import detect_a, detect_b
 
 def make_tree_detector_map(
     family,

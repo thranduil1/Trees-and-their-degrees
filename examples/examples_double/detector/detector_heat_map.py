@@ -3,8 +3,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from double_junction.trees.Tree_building import tree_at, make_tree_family
-from double_junction.detector.Detector_maps import detect_a, detect_b
+from double_junction.trees.tree_building import tree_at, make_tree_family
+from double_junction.detector.detector_maps import detect_a, detect_b
 from double_junction.detector.Quotient import quotient_cube_to_sphere
 
 # What we are actually plotting is the distance from a quotient-cube point to the basepoint. 

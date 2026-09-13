@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from double_junction.degree.Degree_computations import degree_on_cube_map
+from double_junction.degree.degree_computations import degree_on_cube_map
 
 def identity_map(x):
     return x.copy()
