@@ -23,6 +23,25 @@ class SimpleCombinatorialTree:
         self.a = a
         self.angle_degrees = angle_degrees
 
+class SimpleGeometricTree:
+    def __init__(
+        self,
+        *,
+        N,
+        transverse_dimension,
+        time_coordinate,
+        a,
+        vertices,
+        edges
+    ):
+        self.N = N
+        self.transverse_dimension = transverse_dimension
+        self.time_coordinate = time_coordinate
+        self.a = a
+        self.vertices = vertices
+        self.edges = edges
+
+
 
 def make_simple_combinatorial_tree(
     N,
@@ -102,7 +121,7 @@ def make_simple_combinatorial_tree(
     )
 
 
-def tree_at_one(simple_combinatorial_tree, p):
+def make_simple_geometric_tree_at(simple_combinatorial_tree, p):
     """
     Build a one-junction tree for input p in [0,1]^N,
     with an a-ary junction (1 root, a leaves).
@@ -153,11 +172,11 @@ def tree_at_one(simple_combinatorial_tree, p):
 
     edges = [("a0", "root")] + [("a0", f"leaf{i}") for i in range(a)]
 
-    return {
-        "N": N,
-        "transverse_dimension": d,
-        "time_coordinate": time_coordinate,
-        "a": a,
-        "vertices": vertices,
-        "edges": edges,
-    }
+    return SimpleGeometricTree(
+        N = N,
+        transverse_dimension = d,
+        time_coordinate= time_coordinate,
+        a=a,
+        vertices=vertices,
+        edges=edges
+    )

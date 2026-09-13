@@ -9,7 +9,7 @@ import numpy as np
 
 
 def plot_tree_3d(
-    tree,
+    simple_geometric_tree,
     *,
     ax=None,
     show_vertices=True,
@@ -23,8 +23,8 @@ def plot_tree_3d(
 
     Parameters
     ----------
-    tree : dict
-        From tree_at with N=3.
+    simple_geometric_tree : SimpleGeometricTree
+        From make_simple_geometric_tree_at with N=3.
     ax : Axes3D, optional
         Existing 3D axis; if None, a new figure/axis is created.
     show_vertices : bool
@@ -42,11 +42,11 @@ def plot_tree_3d(
     -------
     fig, ax
     """
-    if tree["N"] != 3:
+    if simple_geometric_tree.N != 3:
         raise ValueError("This plotter is for N=3 only.")
 
-    vertices = tree["vertices"]
-    edges = tree["edges"]
+    vertices = simple_geometric_tree.vertices
+    edges = simple_geometric_tree.edges
 
     if ax is None:
         fig = plt.figure(figsize=figsize)
@@ -101,6 +101,3 @@ def plot_tree_3d(
     plt.tight_layout()
     return fig, ax
 
-    plt.tight_layout()
-
-    return fig, ax, tree

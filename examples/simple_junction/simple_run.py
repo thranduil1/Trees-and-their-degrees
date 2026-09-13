@@ -13,7 +13,7 @@ from mathmodels.simple_junction.degree_simple import (
 )
 from mathmodels.simple_junction.making_tree_simple import (
     make_simple_combinatorial_tree,
-    tree_at_one,
+    make_simple_geometric_tree_at,
 )
 
 simple_combinatorial_tree = make_simple_combinatorial_tree(
@@ -24,10 +24,10 @@ simple_combinatorial_tree = make_simple_combinatorial_tree(
 )
 
 p = np.array([0.2, 0.5, 0.6])  # some point in [0,1]^3
-tree = tree_at_one(simple_combinatorial_tree, p)
+simple_geometric_tree = make_simple_geometric_tree_at(simple_combinatorial_tree, p)
 
 fig, ax = plot_tree_3d(
-    tree,
+    simple_geometric_tree,
     show_vertices=True,
     vertex_labels=True,
 )

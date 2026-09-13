@@ -1,6 +1,6 @@
 import numpy as np
 
-from mathmodels.simple_junction.making_tree_simple import tree_at_one
+from mathmodels.simple_junction.making_tree_simple import make_simple_geometric_tree_at
 
 
 def edge_slice_intersection(
@@ -39,13 +39,12 @@ def one_dimensional_detector(simple_combinatorial_tree, p, *, slice_time):
     Intersects the tree with the time slice t = slice_time.
     Returns a point in [0,1]^{N-1} (transverse space) or None (basepoint).
     """
-    N = simple_combinatorial_tree.N
     d = simple_combinatorial_tree.transverse_dimension
     time_coordinate = simple_combinatorial_tree.time_coordinate
 
-    tree = tree_at_one(simple_combinatorial_tree, p)
-    vertices = tree["vertices"]
-    edges = tree["edges"]
+    simple_geometric_tree = make_simple_geometric_tree_at(simple_combinatorial_tree, p)
+    vertices = simple_geometric_tree.vertices
+    edges = simple_geometric_tree.edges
 
     rootward_edge = ("a0", "root")
     leafward_edges = [e for e in edges if e != rootward_edge]

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
+from detector_simple_plot import detector_heatmap_N3
 
-from examples.simple_junction.detector.detector_simple_plot import detector_heatmap_N3
 from mathmodels.simple_junction.making_tree_simple import make_simple_combinatorial_tree
 
 simple_combinatorial_tree = make_simple_combinatorial_tree(
