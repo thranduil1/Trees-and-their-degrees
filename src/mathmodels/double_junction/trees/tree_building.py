@@ -57,7 +57,7 @@ def make_double_combinatorial_tree(
     barycenter_box_margin=0.3,
     junction_span_a=0.2,
     junction_span_b=0.2,
-    junction_time_gap=0.2,
+    junction_time_gap=0.15,
     leaf_margin=0.10,
     leaf_time=0.05,
     root_time=0.95,

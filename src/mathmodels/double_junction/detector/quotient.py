@@ -1,6 +1,14 @@
-"""
-Here we simply make explicit the conversion between a quotient-cube point
-to a point of S^N in R^(N+1).
+
+
+# This will be useful to plot the detector (where it doesn't matter much)
+# and to compute the degree (where it matters a lot).
+import numpy as np
+
+
+def quotient_cube_to_sphere(q, N):
+    """
+    Here we simply make explicit the conversion between a quotient-cube point
+    to a point of S^N in R^(N+1).
 
     Input
     -----
@@ -18,15 +26,8 @@ to a point of S^N in R^(N+1).
 
         (0, ..., 0, 1).
 
-Every point of boundary(C^N) would also go to this north pole.
-"""
-
-# This will be useful to plot the detector (where it doesn't matter much)
-# and to compute the degree (where it matters a lot).
-import numpy as np
-
-
-def quotient_cube_to_sphere(q, N):
+    Every point of boundary(C^N) would also go to this north pole.
+    """ 
 
     north_pole = np.zeros(N + 1)
     north_pole[-1] = 1.0

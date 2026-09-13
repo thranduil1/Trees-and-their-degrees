@@ -467,10 +467,16 @@ Some possible fixes include doing fewer Newton iterations or computing the Jacob
 but the best idea would probably be to create a grid which is not uniform.
 We could start with a coarse grid, and mark the cells which are likely to contain a preimage of our value,
 only subdivide those cells with a finer grid, and repeat the process until we get a few candidate cells.
-
-We could also use more sophisticated programs to find roots, such as.
+We could also use more sophisticated programs to find roots.
 
 \subsection{Other problems}
+The parameters \texttt{junction\char`_span\char`_a, junction\char`_span\char`_b, junction\char`_time\char`_gap} 
+and \texttt{detector\char`_radius} are crucial to set correctly. 
+This is because the actual detector map constructs an infinitesimal detector cube,
+but as we cannot do that we need to approximate it by a small enough cube.
+The values we have defined work here but they would not work for larger values of a and b.
+We could set a formula for these parameters which depends on a and b. 
+
 We also note that the model for trees is not that readily adaptable to trees with triple junctions,
 i.e. the case of trees with $a$-junctions, $b$-junctions, and $c$-junctions,
 which are allowed to collide and switch pairwise.

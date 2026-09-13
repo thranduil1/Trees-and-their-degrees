@@ -2,7 +2,6 @@ import numpy as np
 
 from mathmodels.double_junction.degree.degree_computations import degree_on_cube_map
 
-
 def identity_map(x):
     return x.copy()
 

@@ -48,9 +48,9 @@ _, _, distances_b00, active_b00 = plot_detector_time_face(
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
-    fixed_x_value=0.2,
+    fixed_x_value=0.05,
     resolution=120,
-    title="b-detector: t=0, fixed x=0.2",
+    title="b-detector: t=0, fixed x=0.05",
     ax=axes_b[0],
 )
 
@@ -59,9 +59,9 @@ _, _, distances_b01, active_b01 = plot_detector_time_face(
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
-    fixed_x_value=0.4,
+    fixed_x_value=0.1,
     resolution=120,
-    title="b-detector: t=0, fixed x=0.4",
+    title="b-detector: t=0, fixed x=0.1",
     ax=axes_b[1],
 )
 
@@ -70,9 +70,9 @@ _, _, distances_b10, active_b10 = plot_detector_time_face(
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
-    fixed_x_value=0.6,
+    fixed_x_value=0.2,
     resolution=120,
-    title="b-detector: t=0, fixed x=0.6",
+    title="b-detector: t=0, fixed x=0.2",
     ax=axes_b[2],
 )
 
