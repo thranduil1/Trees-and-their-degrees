@@ -250,7 +250,7 @@ from mathmodels.simple_junction.detector_simple import (
 
 
 def detector_boundary_degree(
-    family,
+    simple_combinatorial_tree,
     *,
     regular_value=None,
     samples=61,
@@ -265,8 +265,8 @@ def detector_boundary_degree(
     has positive orientation and p_N=0 has negative orientation, so
     degree = degree(p_N=1) - degree(p_N=0).
     """
-    N = int(family["N"])
-    detector_map = make_slice_detector_map(family)
+    N = int(simple_combinatorial_tree.N)
+    detector_map = make_slice_detector_map(simple_combinatorial_tree)
 
     bottom = degree_on_time_face(
         detector_map,

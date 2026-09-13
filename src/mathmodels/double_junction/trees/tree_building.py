@@ -38,7 +38,7 @@ def make_tree_family(
     N=3,
     barycenter_box_margin=0.3,
     junction_span_a=0.2,
-    junction_span_b=0.2, 
+    junction_span_b=0.2,
     junction_time_gap=0.2,
     leaf_margin=0.10,
     leaf_time=0.05,
@@ -144,9 +144,7 @@ def make_tree_family(
 
 def physical_barycenter(family, x):
     N = family["N"]
-    margin = family.get(
-        "barycenter_box_margin"
-    )
+    margin = family.get("barycenter_box_margin")
 
     x = np.asarray(x, dtype=float)
 

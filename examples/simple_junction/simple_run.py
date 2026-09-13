@@ -12,11 +12,11 @@ from mathmodels.simple_junction.degree_simple import (
     detector_boundary_degree,
 )
 from mathmodels.simple_junction.making_tree_simple import (
-    make_family_one,
+    make_simple_combinatorial_tree,
     tree_at_one,
 )
 
-family = make_family_one(
+simple_combinatorial_tree = make_simple_combinatorial_tree(
     N=3,
     a=4,
     angle_degrees=30.0,
@@ -24,7 +24,7 @@ family = make_family_one(
 )
 
 p = np.array([0.2, 0.5, 0.6])  # some point in [0,1]^3
-tree = tree_at_one(family, p)
+tree = tree_at_one(simple_combinatorial_tree, p)
 
 fig, ax = plot_tree_3d(
     tree,
@@ -43,7 +43,7 @@ plt.close(fig)
 ## Now we plot the detector.
 
 fig, ax, grid, values = detector_heatmap_N3(
-    family,
+    simple_combinatorial_tree,
     fixed_coord="p3",
     fixed_value=0.8,
     samples=101,
@@ -63,7 +63,7 @@ plt.close(fig)
 ## Now we compute the degree
 
 result = detector_boundary_degree(
-    family,
+    simple_combinatorial_tree,
     regular_value=None,  # defaults to center of transverse cube
     samples=61,  # grid resolution per face
     boundary_tol=1e-7,

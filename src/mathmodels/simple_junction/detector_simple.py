@@ -2,6 +2,7 @@ import numpy as np
 
 from mathmodels.simple_junction.making_tree_simple import tree_at_one
 
+
 def edge_slice_intersection(
     start,
     end,
@@ -31,18 +32,18 @@ def edge_slice_intersection(
     return start + t * (end - start)
 
 
-def one_dimensional_detector(family, p, *, slice_time):
+def one_dimensional_detector(simple_combinatorial_tree, p, *, slice_time):
     """
     Detector map for input p in [0,1]^N.
 
     Intersects the tree with the time slice t = slice_time.
     Returns a point in [0,1]^{N-1} (transverse space) or None (basepoint).
     """
-    N = family["N"]
-    d = family["transverse_dimension"]
-    time_coordinate = family["time_coordinate"]
+    N = simple_combinatorial_tree.N
+    d = simple_combinatorial_tree.transverse_dimension
+    time_coordinate = simple_combinatorial_tree.time_coordinate
 
-    tree = tree_at_one(family, p)
+    tree = tree_at_one(simple_combinatorial_tree, p)
     vertices = tree["vertices"]
     edges = tree["edges"]
 
@@ -78,8 +79,10 @@ def one_dimensional_detector(family, p, *, slice_time):
     return closest[:d]
 
 
-def make_slice_detector_map(family, slice_time=0.5):
+def make_slice_detector_map(simple_combinatorial_tree, slice_time=0.5):
     def detector_map(p):
-        return one_dimensional_detector(family, p, slice_time=slice_time)
+        return one_dimensional_detector(
+            simple_combinatorial_tree, p, slice_time=slice_time
+        )
 
     return detector_map

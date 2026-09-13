@@ -42,7 +42,7 @@ def distance_to_boundary(q):
 
 
 def detector_heatmap_N3(
-    family,
+    simple_combinatorial_tree,
     *,
     fixed_coord="p3",
     fixed_value=0.5,
@@ -55,8 +55,8 @@ def detector_heatmap_N3(
 
     Parameters
     ----------
-    family : dict
-        From make_family with N=3.
+    simple_combinatorial_tree : dict
+        From make_simple_combinatorial_tree with N=3.
     fixed_coord : {"p1", "p2", "p3"}
         Which input coordinate to fix.
     fixed_value : float
@@ -71,14 +71,14 @@ def detector_heatmap_N3(
     fig, ax, grid, values
     """
 
-    if family["N"] != 3:
+    if simple_combinatorial_tree.N != 3:
         raise ValueError("This heat map is for N=3 only.")
 
-    d = family["transverse_dimension"]
+    d = simple_combinatorial_tree.transverse_dimension
     if d != 2:
         raise ValueError("Expected transverse_dimension=2 for N=3.")
 
-    detector_map = make_slice_detector_map(family, slice_time)
+    detector_map = make_slice_detector_map(simple_combinatorial_tree, slice_time)
 
     xs = np.linspace(0.0, 1.0, samples)
     ys = np.linspace(0.0, 1.0, samples)

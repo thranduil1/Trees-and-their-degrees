@@ -1,10 +1,30 @@
 import numpy as np
 
-# Distinguish a "time direction" in which the leaves are progressing from leaves to root.
-# The following two functions either distinguish that special dimension or integrate it back in.
+
+class SimpleCombinatorialTree:
+    def __init__(
+        self,
+        *,
+        N,
+        transverse_dimension,
+        time_coordinate,
+        edge_length,
+        root_direction,
+        leaf_directions,
+        a,
+        angle_degrees,
+    ):
+        self.N = N
+        self.transverse_dimension = transverse_dimension
+        self.time_coordinate = time_coordinate
+        self.edge_length = edge_length
+        self.root_direction = root_direction
+        self.leaf_directions = leaf_directions
+        self.a = a
+        self.angle_degrees = angle_degrees
 
 
-def make_family_one(
+def make_simple_combinatorial_tree(
     N,
     *,
     a,
@@ -12,7 +32,7 @@ def make_family_one(
     edge_length=1.0,
 ):
     """
-    Family of one-junction trees for input p in [0,1]^N,
+    simple_combinatorial_tree of one-junction trees for input p in [0,1]^N,
     with an a-ary junction (1 root edge, a leaf edges).
 
     Transverse dimension d = N - 1.
@@ -31,7 +51,7 @@ def make_family_one(
 
     Returns
     -------
-    family : dict
+    SimpleCombinatorialTree
     """
     if N < 2:
         raise ValueError("N must be at least 2 (so that d = N-1 >= 1).")
@@ -70,19 +90,19 @@ def make_family_one(
 
     leaf_directions = np.array(leaf_directions, dtype=float)
 
-    return {
-        "N": N,
-        "transverse_dimension": d,
-        "time_coordinate": time_coordinate,
-        "edge_length": float(edge_length),
-        "root_direction": root_direction,
-        "leaf_directions": leaf_directions,
-        "a": int(a),
-        "angle_degrees": float(angle_degrees),
-    }
+    return SimpleCombinatorialTree(
+        N=N,
+        transverse_dimension=d,
+        time_coordinate=time_coordinate,
+        edge_length=float(edge_length),
+        root_direction=root_direction,
+        leaf_directions=leaf_directions,
+        a=int(a),
+        angle_degrees=float(angle_degrees),
+    )
 
 
-def tree_at_one(family, p):
+def tree_at_one(simple_combinatorial_tree, p):
     """
     Build a one-junction tree for input p in [0,1]^N,
     with an a-ary junction (1 root, a leaves).
@@ -92,8 +112,8 @@ def tree_at_one(family, p):
 
     Parameters
     ----------
-    family : dict
-        From make_family.
+    simple_combinatorial_tree : dict
+        From make_simple_combinatorial_tree.
     p : array_like
         Point in [0,1]^N.
 
@@ -101,14 +121,14 @@ def tree_at_one(family, p):
     -------
     tree : dict
     """
-    N = family["N"]
-    d = family["transverse_dimension"]
-    time_coordinate = family["time_coordinate"]
-    edge_length = family["edge_length"]
-    a = family["a"]
+    N = simple_combinatorial_tree.N
+    d = simple_combinatorial_tree.transverse_dimension
+    time_coordinate = simple_combinatorial_tree.time_coordinate
+    edge_length = simple_combinatorial_tree.edge_length
+    a = simple_combinatorial_tree.a
 
-    root_direction = family["root_direction"]
-    leaf_directions = family["leaf_directions"]  # shape (a, N)
+    root_direction = simple_combinatorial_tree.root_direction
+    leaf_directions = simple_combinatorial_tree.leaf_directions  # shape (a, N)
 
     p = np.asarray(p, dtype=float)
 

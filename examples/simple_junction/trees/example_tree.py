@@ -3,11 +3,11 @@ import numpy as np
 
 from examples.simple_junction.trees.plot_dim_one_tree import plot_tree_3d
 from mathmodels.simple_junction.making_tree_simple import (
-    make_family_one,
+    make_simple_combinatorial_tree,
     tree_at_one,
 )
 
-family = make_family_one(
+simple_combinatorial_tree = make_simple_combinatorial_tree(
     N=3,
     a=4,
     angle_degrees=30.0,
@@ -15,7 +15,7 @@ family = make_family_one(
 )
 
 p = np.array([0.2, 0.5, 0.6])  # some point in [0,1]^3
-tree = tree_at_one(family, p)
+tree = tree_at_one(simple_combinatorial_tree, p)
 
 fig, ax = plot_tree_3d(
     tree,

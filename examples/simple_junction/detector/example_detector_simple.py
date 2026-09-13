@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
 from examples.simple_junction.detector.detector_simple_plot import detector_heatmap_N3
-from mathmodels.simple_junction.making_tree_simple import make_family_one
+from mathmodels.simple_junction.making_tree_simple import make_simple_combinatorial_tree
 
-family = make_family_one(
+simple_combinatorial_tree = make_simple_combinatorial_tree(
     N=3,
     a=4,
     angle_degrees=30.0,
@@ -11,7 +11,7 @@ family = make_family_one(
 )
 
 fig, ax, grid, values = detector_heatmap_N3(
-    family,
+    simple_combinatorial_tree,
     fixed_coord="p3",
     fixed_value=0.8,
     samples=101,
