@@ -248,7 +248,7 @@ def degree_on_time_face(
 
 
 def tree_detector_boundary_degree(
-    family,
+    double_combinatorial_tree,
     detector_type,
     *,
     regular_value_bottom=None,
@@ -262,7 +262,7 @@ def tree_detector_boundary_degree(
     if detector_type not in {"a", "b"}:
         raise ValueError("detector_type must be 'a' or 'b'.")
 
-    N = int(family["N"])
+    N = int(double_combinatorial_tree.N)
     if N < 3:
         raise ValueError("N must be at least 3.")
 
@@ -276,7 +276,7 @@ def tree_detector_boundary_degree(
     )
 
     tree_detector_map = make_tree_detector_map(
-        family,
+        double_combinatorial_tree,
         detector_type,
         detector_kwargs=detector_kwargs,
     )

@@ -8,7 +8,7 @@ from mathmodels.double_junction.detector.detector_maps import detect_a, detect_b
 from mathmodels.double_junction.detector.quotient import (
     quotient_cube_to_sphere,
 )
-from mathmodels.double_junction.trees.tree_building import make_tree_family, tree_at
+from mathmodels.double_junction.trees.tree_building import make_double_combinatorial_tree, make_double_geometric_tree_at
 
 # What we are actually plotting is the distance from a quotient-cube point to the basepoint.
 # We use the quotient_cube_to_sphere representation: C^N / boundary(C^N) ~= S^N.
@@ -16,7 +16,7 @@ from mathmodels.double_junction.trees.tree_building import make_tree_family, tre
 # Important note: this is just for plotting so it doesn't matter but we will have to think later about the model we want to use for our quotient:
 # C^N / boundary(C^N) or S^N ? This will be key in degree computations.
 
-family = make_tree_family(
+double_combinatorial_tree = make_double_combinatorial_tree(
     a=3,
     b=2,
     N=3,
@@ -73,7 +73,7 @@ def detector_distance_to_basepoint(q, N):
 
 
 def plot_detector_slice(
-    family,
+    double_combinatorial_tree,
     target_type,
     *,
     fixed_axis=0,
@@ -85,7 +85,7 @@ def plot_detector_slice(
     ax=None,
 ):
 
-    N = family["N"]
+    N = double_combinatorial_tree.N
 
     if target_type not in {"a", "b"}:
         raise ValueError("target_type must be 'a' or 'b'.")
@@ -127,13 +127,13 @@ def plot_detector_slice(
             x[fixed_axis] = fixed_value
             x[varying_axis] = varying_value
 
-            tree = tree_at(
-                family,
+            double_geometric_tree = make_double_geometric_tree_at(
+                double_combinatorial_tree,
                 x,
                 float(t),
             )
 
-            q = detector(tree)
+            q = detector(double_geometric_tree)
 
             distances[row, column] = detector_distance_to_basepoint(q, N)
 

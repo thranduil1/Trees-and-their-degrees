@@ -1,45 +1,37 @@
 # Testing that the output of the detector on a given tree is coherent with the picture of the tree.
 
-import matplotlib.pyplot as plt
 import numpy as np
 
-from examples.double_junction.trees.tree_plots import plot_tree_3d
 from mathmodels.double_junction.detector.detector_maps import (
     detect_a,
     detect_b,
     detector_data,
 )
-from mathmodels.double_junction.trees.tree_building import make_tree_family, tree_at
+from mathmodels.double_junction.trees.tree_building import (
+    make_double_combinatorial_tree,
+    make_double_geometric_tree_at,
+)
 
-family = make_tree_family(
+double_combinatorial_tree = make_double_combinatorial_tree(
     a=3,
     b=2,
     N=3,
 )
 
-tree = tree_at(
-    family,
+double_geometric_tree = make_double_geometric_tree_at(
+    double_combinatorial_tree,
     x=np.array([0.0, 0.1, 0.1]),
     t=0.2,
 )
 
-fig = plt.figure(figsize=(18, 6))
-
-plot_tree_3d(
-    tree,
-    show_labels=True,
-)
-
-plt.show()
-
-a_output = detect_a(tree)
-b_output = detect_b(tree)
+a_output = detect_a(double_geometric_tree)
+b_output = detect_b(double_geometric_tree)
 
 print("a-detector:", a_output)
 print("b-detector:", b_output)
 
 info = detector_data(
-    tree,
+    double_geometric_tree,
     target_type="a",
 )
 

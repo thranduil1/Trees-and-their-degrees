@@ -2,36 +2,54 @@
 
 import numpy as np
 
-# Basic geometry stuff
+class DoubleCombinatorialTree:
+    def __init__(
+        self,
+        *,
+        a,
+        b,
+        N,
+        barycenter_box_margin,
+        junction_span_a,
+        junction_span_b,
+        junction_time_gap,
+        e_a,
+        e_b,
+        e_time,
+        leaves,
+        root,
+    ):
+        self.a = a
+        self.b=b
+        self.N = N
+        self.barycenter_box_margin = barycenter_box_margin
+        self.junction_span_a = junction_span_a
+        self.junction_span_b = junction_span_b
+        self.junction_time_gap = junction_time_gap
+        self.e_a = e_a
+        self.e_b = e_b
+        self.e_time = e_time
+        self.leaves = leaves
+        self.root = root
 
-# First: a smooth interpolation [0, 1] -> [0, 1].
+class DoubleGeometricTree:
+    def __init__(
+        self,
+        *,
+        vertices,
+        edges,
+        vertex_type,
+        barycenter
+    ):
+        self.vertices = vertices
+        self.edges = edges
+        self.vertex_type = vertex_type
+        self.barycenter = barycenter
+
+# Make a combinatorial tree depending on some parameters:
 
 
-def smoothstep(s):
-    return s * s * (3.0 - 2.0 * s)
-
-
-# A function which returns equally spaced points in an interval [margin, 1 - margin]
-
-
-def equally_spaced_interior(count, margin):
-    if count < 1:
-        raise ValueError("count must be positive.")
-
-    if count == 1:
-        return np.array([0.5])
-
-    return np.linspace(
-        margin,
-        1.0 - margin,
-        count,
-    )
-
-
-# Make a tree family depending on some parameters:
-
-
-def make_tree_family(
+def make_double_combinatorial_tree(
     a,
     b,
     *,
@@ -97,12 +115,12 @@ def make_tree_family(
     e_time = np.zeros(N)
     e_time[-1] = 1.0
 
-    leaf_a_coordinates = equally_spaced_interior(
+    leaf_a_coordinates = _equally_spaced_interior(
         a,
         leaf_margin,
     )
 
-    leaf_b_coordinates = equally_spaced_interior(
+    leaf_b_coordinates = _equally_spaced_interior(
         b,
         leaf_margin,
     )
@@ -122,29 +140,29 @@ def make_tree_family(
     root = np.full(N, 0.5)
     root[-1] = root_time
 
-    return {
-        "a": int(a),
-        "b": int(b),
-        "N": int(N),
-        "barycenter_box_margin": float(barycenter_box_margin),
-        "junction_span_a": float(junction_span_a),
-        "junction_span_b": float(junction_span_b),
-        "junction_time_gap": float(junction_time_gap),
-        "e_a": e_a,
-        "e_b": e_b,
-        "e_time": e_time,
-        "leaves": leaves,
-        "root": root,
-    }
+    return DoubleCombinatorialTree(
+        a = int(a),
+        b = int(b),
+        N = int(N),
+        barycenter_box_margin=float(barycenter_box_margin),
+        junction_span_a=float(junction_span_a),
+        junction_span_b=float(junction_span_b),
+        junction_time_gap=float(junction_time_gap),
+        e_a = e_a,
+        e_b = e_b,
+        e_time = e_time,
+        leaves = leaves,
+        root = root
+    )
 
 
 # Physical barycenter (because of margin complications (x_bar always lies in the interior box
 # [margin, 1-margin]^N.)- in reality I actually bypass a lot of this)
 
 
-def physical_barycenter(family, x):
-    N = family["N"]
-    margin = family.get("barycenter_box_margin")
+def physical_barycenter(double_combinatorial_tree, x):
+    N = double_combinatorial_tree.N
+    margin = double_combinatorial_tree.barycenter_box_margin
 
     x = np.asarray(x, dtype=float)
 
@@ -162,29 +180,29 @@ def physical_barycenter(family, x):
 # No two distinct junctions occupy the same position when t != 1/2. At t = 1/2 there is only one junction: AB.
 
 
-def tree_at(family, x, t):
+def make_double_geometric_tree_at(double_combinatorial_tree, x, t):
 
     if not 0.0 <= t <= 1.0:
         raise ValueError("t must lie in [0, 1].")
 
-    a = family["a"]
-    b = family["b"]
+    a = double_combinatorial_tree.a
+    b = double_combinatorial_tree.b
 
-    e_a = family["e_a"]
-    e_b = family["e_b"]
-    e_time = family["e_time"]
+    e_a = double_combinatorial_tree.e_a
+    e_b = double_combinatorial_tree.e_b
+    e_time = double_combinatorial_tree.e_time
 
-    span_a = family["junction_span_a"]
-    span_b = family["junction_span_b"]
-    time_gap = family["junction_time_gap"]
+    span_a = double_combinatorial_tree.junction_span_a
+    span_b = double_combinatorial_tree.junction_span_b
+    time_gap = double_combinatorial_tree.junction_time_gap
 
-    x_bar = physical_barycenter(family, x)
+    x_bar = physical_barycenter(double_combinatorial_tree, x)
 
-    vertices = {name: position.copy() for name, position in family["leaves"].items()}
+    vertices = {name: position.copy() for name, position in double_combinatorial_tree.leaves.items()}
 
-    vertices["R"] = family["root"].copy()
+    vertices["R"] = double_combinatorial_tree.root.copy()
 
-    vertex_type = {name: "leaf" for name in family["leaves"]}
+    vertex_type = {name: "leaf" for name in double_combinatorial_tree.leaves}
 
     vertex_type["R"] = "root"
 
@@ -196,7 +214,7 @@ def tree_at(family, x, t):
     # b lower a-junctions A_j, then one upper b-junction B.
     # --------------------------------------------------------
     if t < 0.5:
-        collapse = 1.0 - smoothstep(2.0 * t)
+        collapse = 1.0 - _smoothstep(2.0 * t)
 
         lower_time_offset = -time_gap / (b + 1)
 
@@ -248,7 +266,7 @@ def tree_at(family, x, t):
     # a lower b-junctions B_i, then one upper a-junction A.
     # --------------------------------------------------------
     else:
-        collapse = 1.0 - smoothstep(2.0 * (1.0 - t))
+        collapse = 1.0 - _smoothstep(2.0 * (1.0 - t))
 
         lower_time_offset = -time_gap / (a + 1)
 
@@ -279,37 +297,63 @@ def tree_at(family, x, t):
 
         edges.append(("A", "R"))
 
-    return {
-        "vertices": vertices,
-        "edges": edges,
-        "vertex_type": vertex_type,
-        "barycenter": x_bar,
-    }
+    return DoubleGeometricTree(
+        vertices = vertices,
+        edges = edges,
+        vertex_type = vertex_type,
+        barycenter = x_bar
+    )
 
 
 # Extra maps to access the junctions and edges
 
 
-def junctions(tree):
+def junctions(double_geometric_tree):
 
     return [
         (
             name,
-            tree["vertices"][name],
-            tree["vertex_type"][name],
+            double_geometric_tree.vertices[name],
+            double_geometric_tree.vertex_type[name],
         )
-        for name in tree["vertices"]
-        if tree["vertex_type"][name] in {"a", "b", "ab"}
+        for name in double_geometric_tree.vertices
+        if double_geometric_tree.vertex_type[name] in {"a", "b", "ab"}
     ]
 
 
-def edge_segments(tree):
+def edge_segments(double_geometric_tree):
     return [
         (
             child,
             parent,
-            tree["vertices"][child],
-            tree["vertices"][parent],
+            double_geometric_tree.vertices[child],
+            double_geometric_tree.vertices[parent],
         )
-        for child, parent in tree["edges"]
+        for child, parent in double_geometric_tree.edges
     ]
+
+
+# Basic geometry stuff
+
+# First: a smooth interpolation [0, 1] -> [0, 1].
+
+
+def _smoothstep(s):
+    return s * s * (3.0 - 2.0 * s)
+
+
+# A function which returns equally spaced points in an interval [margin, 1 - margin]
+
+
+def _equally_spaced_interior(count, margin):
+    if count < 1:
+        raise ValueError("count must be positive.")
+
+    if count == 1:
+        return np.array([0.5])
+
+    return np.linspace(
+        margin,
+        1.0 - margin,
+        count,
+    )

@@ -95,12 +95,12 @@ def cube_radius_to_boundary(center):
 
 
 def forbidden_distance(
-    tree,
+    double_geometric_tree,
     junction_name,
     center,
 ):
-    vertices = tree["vertices"]
-    edges = tree["edges"]
+    vertices = double_geometric_tree.vertices
+    edges = double_geometric_tree.edges
 
     distances = []
 
@@ -128,7 +128,7 @@ def forbidden_distance(
 
 
 def detector_data(
-    tree,
+    double_geometric_tree,
     target_type,
     detector_radius=0.05,
     *,
@@ -144,9 +144,8 @@ def detector_data(
     if target_type not in {"a", "b"}:
         raise ValueError("target_type must be 'a' or 'b'.")
 
-    vertices = tree["vertices"]
-    vertex_type = tree["vertex_type"]
-    edges = tree["edges"]
+    vertices = double_geometric_tree.vertices
+    vertex_type = double_geometric_tree.vertex_type
 
     if not vertices:
         return None
@@ -176,7 +175,7 @@ def detector_data(
         )
 
         forbidden_radius = forbidden_distance(
-            tree,
+            double_geometric_tree,
             name,
             center,
         )
@@ -246,7 +245,7 @@ def detector_data(
 # These values are either None (the basepoint) or an array which represents an interior point of C^N.
 
 
-def detect_a(tree, **kwargs):
+def detect_a(double_geometric_tree, **kwargs):
     """
     Detect a uniquely isolatable a-junction.
 
@@ -255,7 +254,7 @@ def detect_a(tree, **kwargs):
         y in (0, 1)^N for the detected normalized position.
     """
     data = detector_data(
-        tree,
+        double_geometric_tree,
         target_type="a",
         **kwargs,
     )
@@ -266,7 +265,7 @@ def detect_a(tree, **kwargs):
     return data["normalized_position"]
 
 
-def detect_b(tree, **kwargs):
+def detect_b(double_geometric_tree, **kwargs):
     """
     Detect a uniquely isolatable b-junction.
 
@@ -275,7 +274,7 @@ def detect_b(tree, **kwargs):
         y in (0, 1)^N for the detected normalized position.
     """
     data = detector_data(
-        tree,
+        double_geometric_tree,
         target_type="b",
         **kwargs,
     )

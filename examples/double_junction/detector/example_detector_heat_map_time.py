@@ -5,15 +5,15 @@ from detector_heat_map_time import (
     plot_detector_time_face,
 )
 
-from mathmodels.double_junction.trees.tree_building import make_tree_family
+from mathmodels.double_junction.trees.tree_building import make_double_combinatorial_tree
 
-family = make_tree_family(a=3, b=2, N=3)
+double_combinatorial_tree = make_double_combinatorial_tree(a=3, b=2, N=3)
 
 # a-detector
 fig_a, axes_a = plt.subplots(1, 2, figsize=(14, 6))
 
 _, _, distances_a0, active_a0 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -24,7 +24,7 @@ _, _, distances_a0, active_a0 = plot_detector_time_face(
 )
 
 _, _, distances_a1, active_a1 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     t_value=1.0,
     varying_axes=(0, 1),
@@ -44,7 +44,7 @@ fig_b, axes_b = plt.subplots(2, 2, figsize=(14, 10))
 axes_b = axes_b.flatten()
 
 _, _, distances_b00, active_b00 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -55,7 +55,7 @@ _, _, distances_b00, active_b00 = plot_detector_time_face(
 )
 
 _, _, distances_b01, active_b01 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -66,7 +66,7 @@ _, _, distances_b01, active_b01 = plot_detector_time_face(
 )
 
 _, _, distances_b10, active_b10 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -77,7 +77,7 @@ _, _, distances_b10, active_b10 = plot_detector_time_face(
 )
 
 _, _, distances_b11, active_b11 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -99,7 +99,7 @@ fig_b, axes_b = plt.subplots(2, 2, figsize=(14, 10))
 axes_b = axes_b.flatten()
 
 _, _, distances_b00, active_b00 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=1.0,
     varying_axes=(0, 1),
@@ -110,7 +110,7 @@ _, _, distances_b00, active_b00 = plot_detector_time_face(
 )
 
 _, _, distances_b01, active_b01 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=1.0,
     varying_axes=(0, 1),
@@ -121,7 +121,7 @@ _, _, distances_b01, active_b01 = plot_detector_time_face(
 )
 
 _, _, distances_b10, active_b10 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=1.0,
     varying_axes=(0, 1),
@@ -132,7 +132,7 @@ _, _, distances_b10, active_b10 = plot_detector_time_face(
 )
 
 _, _, distances_b11, active_b11 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=1.0,
     varying_axes=(0, 1),

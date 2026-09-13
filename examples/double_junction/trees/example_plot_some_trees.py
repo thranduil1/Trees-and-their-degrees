@@ -3,9 +3,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tree_plots import plot_tree_3d
 
-from mathmodels.double_junction.trees.tree_building import make_tree_family, tree_at
+from mathmodels.double_junction.trees.tree_building import (
+    make_double_combinatorial_tree,
+    make_double_geometric_tree_at,
+)
 
-family = make_tree_family(
+double_combinatorial_tree = make_double_combinatorial_tree(
     a=3,
     b=2,
     N=3,
@@ -34,14 +37,14 @@ for k, (t, title) in enumerate(
         projection="3d",
     )
 
-    tree = tree_at(
-        family,
+    double_geometric_tree = make_double_geometric_tree_at(
+        double_combinatorial_tree,
         x=x,
         t=t,
     )
 
     plot_tree_3d(
-        tree,
+        double_geometric_tree,
         ax=ax,
         title=title,
         show_labels=True,

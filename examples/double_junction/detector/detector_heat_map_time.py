@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from mathmodels.double_junction.detector.detector_maps import detect_a, detect_b
-from mathmodels.double_junction.trees.tree_building import tree_at
+from mathmodels.double_junction.trees.tree_building import make_double_geometric_tree_at
 
 
 def plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type,
     *,
     t_value,
@@ -30,8 +30,8 @@ def plot_detector_time_face(
 
     Parameters
     ----------
-    family:
-        Tree-family dictionary from make_tree_family(...).
+    double_combinatorial_tree:
+        DoubleCombinatorialTree.
 
     target_type:
         "a" or "b".
@@ -56,7 +56,7 @@ def plot_detector_time_face(
     fig, ax, distances, active
     """
 
-    N = family["N"]
+    N = double_combinatorial_tree.N
 
     if N != 3:
         raise ValueError("This plotting function is intended for N=3.")
@@ -118,14 +118,14 @@ def plot_detector_time_face(
             x[horizontal_axis] = horizontal_value
             x[vertical_axis] = vertical_value
 
-            tree = tree_at(
-                family,
+            double_geometric_tree = make_double_geometric_tree_at(
+                double_combinatorial_tree,
                 x,
                 t_value,
             )
 
             q = detector(
-                tree,
+                double_geometric_tree,
                 **detector_kwargs,
             )
 

@@ -1,8 +1,8 @@
 import numpy as np
 
 
-def sample_outputs(family, time_value, f, samples=61):
-    N = family["N"]
+def sample_outputs(double_combinatorial_tree, time_value, f, samples=61):
+    N = double_combinatorial_tree.N
     outputs = []
     for index in np.ndindex(*(samples for _ in range(N))):
         x = np.array(index, dtype=float) / (samples - 1)

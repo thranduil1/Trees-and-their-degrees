@@ -10,7 +10,7 @@ import numpy as np
 
 
 def plot_tree_3d(
-    tree,
+    double_geometric_tree,
     *,
     ax=None,
     show_labels=True,
@@ -51,9 +51,9 @@ def plot_tree_3d(
     -------
     fig, ax
     """
-    vertices = tree["vertices"]
-    edges = tree["edges"]
-    vertex_type = tree["vertex_type"]
+    vertices = double_geometric_tree.vertices
+    edges = double_geometric_tree.edges
+    vertex_type = double_geometric_tree.vertex_type
 
     dimensions = {np.asarray(position).shape for position in vertices.values()}
 

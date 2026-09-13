@@ -6,15 +6,15 @@
 import matplotlib.pyplot as plt
 from detector_heat_map import plot_detector_slice
 
-from mathmodels.double_junction.trees.tree_building import make_tree_family
+from mathmodels.double_junction.trees.tree_building import make_double_combinatorial_tree
 
-family = make_tree_family(a=3, b=2, N=3)
+double_combinatorial_tree = make_double_combinatorial_tree(a=3, b=2, N=3)
 
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 _, _, distances0, active0 = plot_detector_slice(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     fixed_axis=0,
     fixed_value=0.0,
@@ -26,7 +26,7 @@ _, _, distances0, active0 = plot_detector_slice(
 )
 
 _, _, distances1, active1 = plot_detector_slice(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     fixed_axis=0,
     fixed_value=1.0,

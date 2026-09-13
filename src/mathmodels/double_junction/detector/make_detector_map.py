@@ -6,11 +6,11 @@ from mathmodels.double_junction.detector.detector_maps import (
     detect_a,
     detect_b,
 )
-from mathmodels.double_junction.trees.tree_building import tree_at
+from mathmodels.double_junction.trees.tree_building import make_double_geometric_tree_at
 
 
 def make_tree_detector_map(
-    family,
+    double_combinatorial_tree,
     detector_type,
     *,
     detector_kwargs=None,
@@ -39,7 +39,7 @@ def make_tree_detector_map(
             "detector_radius": 0.05,
         }
 
-    N = family["N"]
+    N = double_combinatorial_tree.N
 
     if detector_type == "a":
         detector = detect_a
@@ -55,14 +55,14 @@ def make_tree_detector_map(
         x = p[:N]
         t = float(p[N])
 
-        tree = tree_at(
-            family,
+        double_geometric_tree = make_double_geometric_tree_at(
+            double_combinatorial_tree,
             x,
             t,
         )
 
         return detector(
-            tree,
+            double_geometric_tree,
             **detector_kwargs,
         )
 

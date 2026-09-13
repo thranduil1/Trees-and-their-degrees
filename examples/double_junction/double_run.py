@@ -1,6 +1,6 @@
 # This file runs through the entire program for the double junction.
 # It is a good introduction to the repository, as it contains examples for most major functions.
-# We start by building a family and displaying a tree associated to it.
+# We start by building a combinatorial tree and displaying a geometric tree associated to it.
 
 ## Maybe this would be more readable as a notebook? ##
 
@@ -18,9 +18,12 @@ from mathmodels.double_junction.degree.regular_values import (
     sample_outputs,
 )
 from mathmodels.double_junction.detector.make_detector_map import make_tree_detector_map
-from mathmodels.double_junction.trees.tree_building import make_tree_family, tree_at
+from mathmodels.double_junction.trees.tree_building import (
+    make_double_combinatorial_tree,
+    make_double_geometric_tree_at,
+)
 
-family = make_tree_family(
+double_combinatorial_tree = make_double_combinatorial_tree(
     a=3,
     b=2,
     N=3,
@@ -51,14 +54,14 @@ for k, (t, title) in enumerate(
         projection="3d",
     )
 
-    tree = tree_at(
-        family,
+    double_geometric_tree = make_double_geometric_tree_at(
+        double_combinatorial_tree,
         x=x,
         t=t,
     )
 
     plot_tree_3d(
-        tree,
+        double_geometric_tree,
         ax=ax,
         title=title,
         show_labels=True,
@@ -83,7 +86,7 @@ plt.close()
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 _, _, distances0, active0 = plot_detector_slice(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     fixed_axis=0,
     fixed_value=0.0,
@@ -95,7 +98,7 @@ _, _, distances0, active0 = plot_detector_slice(
 )
 
 _, _, distances1, active1 = plot_detector_slice(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     fixed_axis=0,
     fixed_value=1.0,
@@ -115,7 +118,7 @@ plt.show()
 fig_a, axes_a = plt.subplots(1, 2, figsize=(14, 6))
 
 _, _, distances_a0, active_a0 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -126,7 +129,7 @@ _, _, distances_a0, active_a0 = plot_detector_time_face(
 )
 
 _, _, distances_a1, active_a1 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="a",
     t_value=1.0,
     varying_axes=(0, 1),
@@ -144,7 +147,7 @@ plt.show()
 fig_b, axes_b = plt.subplots(1, 2, figsize=(14, 6))
 
 _, _, distances_b0, active_b0 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=0.0,
     varying_axes=(0, 1),
@@ -155,7 +158,7 @@ _, _, distances_b0, active_b0 = plot_detector_time_face(
 )
 
 _, _, distances_b1, active_b1 = plot_detector_time_face(
-    family,
+    double_combinatorial_tree,
     target_type="b",
     t_value=1.0,
     varying_axes=(0, 1),
@@ -174,14 +177,14 @@ plt.show()
 
 # Let us make the maps we want.
 
-f_a = make_tree_detector_map(family, "a")
-f_b = make_tree_detector_map(family, "b")
+f_a = make_tree_detector_map(double_combinatorial_tree, "a")
+f_b = make_tree_detector_map(double_combinatorial_tree, "b")
 
 # First, we need to pick a good regular value.
 # We do this for the a-detector first.
 
-outs0 = sample_outputs(family, 0.0, f_a, samples=61)
-outs1 = sample_outputs(family, 1.0, f_a, samples=61)
+outs0 = sample_outputs(double_combinatorial_tree, 0.0, f_a, samples=61)
+outs1 = sample_outputs(double_combinatorial_tree, 1.0, f_a, samples=61)
 
 y0_bottom = pick_deep_interior_point(outs0)
 y0_top = pick_deep_interior_point(outs1)
@@ -192,7 +195,7 @@ print("Regular value for t=1:", y0_top)
 # Build and print results
 
 result = tree_detector_boundary_degree(
-    family,
+    double_combinatorial_tree,
     detector_type="a",
     regular_value_bottom=y0_bottom,
     regular_value_top=y0_top,
@@ -208,8 +211,8 @@ print("Preimages t=1:", len(result["top_face"]["preimages"]))
 
 # Now let's do this for the b-detector
 
-outs0 = sample_outputs(family, 0.0, f_b, samples=61)
-outs1 = sample_outputs(family, 1.0, f_b, samples=61)
+outs0 = sample_outputs(double_combinatorial_tree, 0.0, f_b, samples=61)
+outs1 = sample_outputs(double_combinatorial_tree, 1.0, f_b, samples=61)
 
 y0_bottom = pick_deep_interior_point(outs0)
 y0_top = pick_deep_interior_point(outs1)
@@ -220,7 +223,7 @@ print("Regular value for t=1:", y0_top)
 # Build and print results
 
 result = tree_detector_boundary_degree(
-    family,
+    double_combinatorial_tree,
     detector_type="b",
     regular_value_bottom=y0_bottom,
     regular_value_top=y0_top,

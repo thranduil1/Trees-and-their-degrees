@@ -18,7 +18,7 @@ def reflect_first_coordinate(x):
     return x
 
 
-res = degree_on_cube_map(reflect_first_coordinate, N=4, samples=21)
+res = degree_on_cube_map(reflect_first_coordinate, N=3, samples=41)
 print(res["relative_degree"])  # should be -1
 
 ## For N>4, any computation will take a certain amount of time
