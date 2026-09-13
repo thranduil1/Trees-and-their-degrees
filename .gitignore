@@ -1,16 +1,10 @@
 __pycache__/
-*.py[cod]
-
-.pytest_cache/
-.ruff_cache/
-.ipynb_checkpoints/
-
 .venv/
-venv/
 
-build/
 dist/
-*.egg-info/
+results/
+
+.ruff_cache/
 
 .gz
 .xml
@@ -19,5 +13,3 @@ dist/
 .log
 .bcf
 .aux
-
-results/
