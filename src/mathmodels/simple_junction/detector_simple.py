@@ -2,7 +2,6 @@ import numpy as np
 
 from mathmodels.simple_junction.making_tree_simple import tree_at_one
 
-
 def edge_slice_intersection(
     start,
     end,

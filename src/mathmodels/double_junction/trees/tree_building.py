@@ -36,7 +36,6 @@ def make_tree_family(
     b,
     *,
     N=3,
-    barycenter_margin=0.1,
     barycenter_box_margin=0.3,
     junction_span_a=0.2,
     junction_span_b=0.2, 
@@ -55,7 +54,7 @@ def make_tree_family(
         coordinate 1     = b-direction,
         coordinate N - 1 = time direction.
 
-    barycenter_margin:
+    barycenter_box_margin:
         The physical junction barycenter lies in
 
             [margin, 1-margin]^N.
@@ -77,63 +76,17 @@ def make_tree_family(
     if N < 3:
         raise ValueError("N must be at least 3.")
 
-    if not 0.0 < barycenter_margin < 0.5:
-        raise ValueError("barycenter_margin must lie in (0, 1/2).")
-
-    if barycenter_box_margin is None:
-        barycenter_box_margin = barycenter_margin
-
     if not 0.0 <= barycenter_box_margin < 0.5:
         raise ValueError("barycenter_box_margin must lie in [0, 1/2).")
 
     if not 0.0 <= leaf_margin < 0.5:
         raise ValueError("leaf_margin must lie in [0, 1/2).")
 
-    if not 0.0 <= leaf_time < barycenter_margin:
-        raise ValueError("leaf_time must be below barycenter_margin.")
+    if not 0.0 <= leaf_time < barycenter_box_margin:
+        raise ValueError("leaf_time must be below barycenter_box_margin.")
 
-    if not 1.0 - barycenter_margin < root_time <= 1.0:
-        raise ValueError("root_time must lie above 1 - barycenter_margin.")
-    # Below are some extra tests which make this definition more accurate but also more annoying to work this so we remove them.
-    #  if not 0.0 <= junction_span_a < 2.0 * barycenter_margin:
-    #      raise ValueError(
-    #         "junction_span_a is too large for the interior margin."
-    #     )
-
-    #  if not 0.0 <= junction_span_b < 2.0 * barycenter_margin:
-    #     raise ValueError(
-    #         "junction_span_b is too large for the interior margin."
-    #     )
-
-    # Adding a check that there's a time gap
-
-    #  if not 0.0 < junction_time_gap < barycenter_margin:
-    #      raise ValueError(
-    #          "junction_time_gap must lie in "
-    #          "(0, barycenter_margin)."
-    #      )
-
-    max_upper_offset = max(
-        a * junction_time_gap / (a + 1),
-        b * junction_time_gap / (b + 1),
-    )
-
-    max_lower_offset = max(
-        junction_time_gap / (a + 1),
-        junction_time_gap / (b + 1),
-    )
-    # these are again tests that make sense but that I choose not to care about right now
-    #  if leaf_time >= barycenter_margin - max_lower_offset:
-    #     raise ValueError(
-    #         "leaf_time is too high: leaves must lie below "
-    #         "every possible lower junction."
-    #     )
-
-    #  if root_time <= 1.0 - barycenter_margin + max_upper_offset:
-    #     raise ValueError(
-    #         "root_time is too low: root must lie above "
-    #         "every possible upper junction."
-    #     )
+    if not 1.0 - barycenter_box_margin < root_time <= 1.0:
+        raise ValueError("root_time must lie above 1 - barycenter_box_margin.")
 
     e_a = np.zeros(N)
     e_a[0] = 1.0
@@ -173,7 +126,6 @@ def make_tree_family(
         "a": int(a),
         "b": int(b),
         "N": int(N),
-        "barycenter_margin": float(barycenter_margin),
         "barycenter_box_margin": float(barycenter_box_margin),
         "junction_span_a": float(junction_span_a),
         "junction_span_b": float(junction_span_b),
@@ -193,8 +145,7 @@ def make_tree_family(
 def physical_barycenter(family, x):
     N = family["N"]
     margin = family.get(
-        "barycenter_box_margin",
-        family["barycenter_margin"],
+        "barycenter_box_margin"
     )
 
     x = np.asarray(x, dtype=float)
