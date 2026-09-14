@@ -53,10 +53,10 @@
   \begin{picture}(1,0.73353556)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{spheresandcubes.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{figures/spheresandcubes.pdf}}%
     \put(0.37693187,0.59393104){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\longrightarrow$\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{spheresandcubes.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{figures/spheresandcubes.pdf}}%
     \put(0.37693187,0.14000826){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\longrightarrow$\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{spheresandcubes.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{figures/spheresandcubes.pdf}}%
   \end{picture}%
 \endgroup%
