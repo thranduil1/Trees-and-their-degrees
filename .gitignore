@@ -6,10 +6,10 @@ results/
 
 .ruff_cache/
 
-.gz
-.xml
-.toc
-.out
-.log
-.bcf
-.aux
+*.gz
+*.xml
+*.toc
+*.out
+*.log
+*.bcf
+*.aux

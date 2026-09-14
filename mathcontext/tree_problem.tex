@@ -238,24 +238,23 @@
 
 \section{Introduction}
 
-In the course of my study of the family of Higman--Thompson groups, 
+In the course of our study of the family of Higman--Thompson groups, 
 there arose a question that was easy to answer in small dimensions
 and much harder in higher dimensions.
-The fundamental reason for this is that it was easy to come up with a reasonable visualization in low dimensions,
-and much harder in higher dimensions because of the limitations of 3-dimensional space.
-Therefore, we tried to come up with a good visualization in higher dimensions.
-
+The fundamental reason for this is that it is much harder to obtain a reasonable visualization in higher dimensions.
 The following document explains this problem and the framework we came up with to answer it in higher dimensions.
 Reading the following document is recommended to understand the specific question we were working on as well as its implementation.
 
+Topological spaces are easier to understand when broken up into simpler spaces with maps between them.
+Because the Higman--Thompson groups can be represented as groups of trees, we wanted to understand the topology of spaces of trees.
+In this case, there is one building block per type of junction in the trees, 
+and the maps between the building blocks are determined by how the junctions attach to each other.
+
 \section{A question about trees}\label{treeprob}
 
-Topological spaces are easier to understand when broken up into building blocks, which are simple spaces, and maps between them.
-Let us say we have a space of trees. 
-We break it up by understanding all the individual junctions, and how the junctions attach to each other.
 We will consider finite rooted trees, and we call an \textbf{$a$-junction} a vertex of the tree with one parent and $a$ children: 
 For instance, \Cseries{[[[][][]]]} is a 3-junction.
-Let us first consider the case of trees with simple junctions.
+We first consider the case of trees with simple junctions.
 
 \subsection{Trees with simple junctions}
 Consider a finite rooted tree which only has $a$-junctions, for $a$ an integer.
@@ -287,7 +286,10 @@ with the following additional \textbf{interchange relation}:
   \Bseries{[[, edge = orange,[, edge = purple][, edge = purple]][, edge = orange,[, edge = purple][, edge = purple]][,edge = orange,[, edge = purple][, edge = purple]]]} = \Bseries{[[, edge = purple,[, edge = orange][, edge = orange][, edge = orange]][, edge = purple,[, edge = orange][, edge = orange][, edge = orange]]]}.
 \end{center} 
 This means that we identify certain trees even if they do not have the same shape.
-How can we represent this equality topologically?
+
+We are interested in embedding these trees into an $N$-dimensional cube,
+thereby going from a combinatorial tree to a geometric tree.
+How does the equality between the combinatorial trees translate to the geometric context?
 In topology, we can always relax an equality between two objects by creating a path between them.
 We add an $ab$-junction which represents this path:
 \begin{center}
@@ -311,18 +313,19 @@ Now our tree is parametrized by an element in $[0,1]^{N+1}$.
 \end{figure}
   
 \begin{mdframed}[backgroundcolor=purple!10]
-In the program, there is a function \texttt{make\char`_family} which holds the combinatorial information about the tree,
-and a function \texttt{tree\char`_at} which to a point in $[0,1]^{N+1}$ and the combinatorial information of the tree
+In the simple junction case and in the double junction case, there is a function \texttt{make\char`_combinatorial\char`_tree} which holds the combinatorial information about the tree,
+and a function \texttt{make\char`_geometric\char`_tree\char`_at} which to a point in $[0,1]^{N+1}$ and the combinatorial information of the tree
 associates the corresponding embedding of a tree inside a unit cube $[0,1]^N$.
 \end{mdframed}
 
 \subsection{Goal -- notion of degree}
 We would like to determine the degree of this extra junction. 
-It is tempting to say that the degree of this junction is $ab-1$.
-However, we now have equivalent trees that do not have the same structure, so how can one determine the degree in this case?
+It is tempting to say that the degree of this junction is $ab-1$ because of the middle picture in figure \ref{timeline}.
+However, the equivalent trees at $t=0$ and $t=1$ have a very different structure, 
+and it is not immediately clear why their degree should be $ab-1$.
 
 Let's give another definition of the degree by going back to the case of a simple junction.
-We represent the junction living inside a small neighborhood, depicted as a circle around it in figure \ref{simple}.
+We represent the junction living inside a small neighborhood, depicted as a circle around it in figure \ref{simplej}.
 Then imagine a smaller lens traveling around the boundary of the small neighborhood and recording what it sees.
 The lens will see a single path $a+1$ times:
 $a$ time with positive orientation and once with negative orientation, and so we recover a total degree of $a-1$.
@@ -356,7 +359,9 @@ We need to count the number of $a$-junctions and $b$-junctions that we see aroun
 This is how we will construct the detector map.
 
 \section{Defining the detector map}
-We create a detector for $a$-junctions, and one for $b$-junctions,
+In the simple junction case, the detector takes the embedding of an $a$-junction inside a cube at a point $p$
+and records the position of the edge closest to the center of the cube.
+We adapt this to the double case to create a detector for $a$-junctions, and one for $b$-junctions,
 according to the following procedure.
 Given a specific embedding of a tree inside a cube,
 we look at a smaller detector cube centered inside the unit cube and we record what it contains:
@@ -371,7 +376,7 @@ which we call the basepoint.
 
 \begin{mdframed}[backgroundcolor=purple!10]
   \centering 
-  The detector map that we define in the program is actually a composition of \texttt{tree\char`_at} and the aforementioned procedure:\\
+  The detector map that we define in the program is actually a composition of \texttt{make\char`_geometric\char`_tree\char`_at} and the aforementioned procedure:\\
 \begin{itemize}
 \item Take a point in the cube $[0,1]^{N+1}$ that we can write $(x,t)$ where $x\in[0,1]^N, t\in[0,1]$;
 \item Construct an embedding of a tree inside the cube $[0,1]^N$. The barycenter of the junctions is at $x$ and the shape of the tree is determined by $t$;
@@ -434,6 +439,12 @@ where $s_p$ is the sign of the Jacobian of $f$ at point $p$.
     In the second instance, they have opposite orientation.
 \end{exemple}
 
+\begin{mdframed}[backgroundcolor=purple!10]
+  In the program, there is a function \texttt{degree\char`_on\char`_cube\char`_map} 
+  which computes the degree of any map from a cube to a cube which sends the boundary to the boundary.
+  The function \texttt{tree\char`_detector\char`_boundary\char`_degree} computes the degree of the $a$- and $b$-detectors.
+\end{mdframed}
+
 \subsection{Algorithm}
 Let us now go through the steps of the algorithm:
 \begin{enumerate}
@@ -446,7 +457,7 @@ Let us now go through the steps of the algorithm:
 \end{enumerate}
 
 Because Newton's method is a bit expensive, we want to have a good test to determine if a cell is likely to contain a preimage of $y$.
-We perform a bounding box testin step 3: for the cell $C$ with set of corners $V$, 
+We perform a bounding box test in step 3: for the cell $C$ with set of corners $V$, 
 we consider the box $\displaystyle \prod[\min_{x\in V}f(x)_i,\max_{x\in V}f(x)_i].$
 If $y$ is not in this box, we discard the cell as unlikely to contain a preimage of $y$.
 This works when the detector map is reasonable.
@@ -454,8 +465,13 @@ This works when the detector map is reasonable.
 \textbf{Picking a regular value for step 1:}
 It is very important to pick a good regular value to carry out the above procedure.
 For maps with a clear analytic formula, this is easy to determine.
-For the detector map, this is not so clear. What we do is look at the outputs of the detector map,
+We therefore look at the outputs of the detector map,
 and pick a regular value that lives inside a cluster of other regular values, to make sure it is in a very regular zone.
+
+\section{Results}
+
+In the simple junction case, we can recover the fact that the degree of the $a$-junction is $a-1$.
+In the double junction case, the degree of the $a$-detector is $-(b-1)$ and the degree of the $b$-detector is $a-1$.
 
 \section{Limitations}
 
@@ -470,7 +486,8 @@ only subdivide those cells with a finer grid, and repeat the process until we ge
 We could also use more sophisticated programs to find roots.
 
 \subsection{Other problems}
-The parameters \texttt{junction\char`_span\char`_a, junction\char`_span\char`_b, junction\char`_time\char`_gap} 
+The parameters \texttt{junction\char`_span\char`_a, junction\char`_span\char`_b},\\ 
+\texttt{junction\char`_time\char`_gap} 
 and \texttt{detector\char`_radius} are crucial to set correctly. 
 This is because the actual detector map constructs an infinitesimal detector cube,
 but as we cannot do that we need to approximate it by a small enough cube.
