@@ -1,6 +1,6 @@
 ## Trees-and-their-degrees
 
-This is an attempt at understanding a problem that arose in the study of Thompson groups.
+This is an attempt at understanding a problem that arose in the study of Thompson groups. These groups can be visualized as groups of trees, and we wanted to understand the topology of these spaces of trees. In order to do this, we need to understand the basic building blocks of the trees, aka the paths and junctions, and how all these building blocks are connected together through attaching maps. We focused on trees with simple junctions and trees with double junctions (for more context, see mathcontext). The project in this repository computes the degree of the attaching maps.
 
 ### What does this repository contain?
 
